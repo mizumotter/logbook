@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Wrangler
+.wrangler/
+.dev.vars
+
+# Claude Code (local-only settings)
+.claude/settings.local.json

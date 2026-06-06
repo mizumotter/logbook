@@ -1,0 +1,352 @@
+<!--
+  Logbook — the board UI (served as a static asset)
+  -------------------------------------------------
+  "Where all your projects stand."
+  Reads/writes the Worker API at /api/* (same origin). Requires an access token
+  (pasted once, kept in this browser's localStorage). Data itself lives server-side
+  (Cloudflare KV), so it is shared across your devices.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logbook</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%93%96</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e0c0b; --bg-soft:#171311; --card:#1c1715; --card-hi:#241d19;
+    --line:#332a25; --line-soft:#271f1b; --text:#f1e9e2; --muted:#a89a8e; --faint:#6f635a;
+    --ember:#ff7a2f; --ember-soft:#ff9a5c; --btn-text:#190d05;
+    --st-active:#5fb878; --st-stalled:#ff7a2f; --st-done:#4a9fd4; --st-frozen:#8a7f76;
+    --glow:rgba(255,122,47,.10);
+    --mono:'IBM Plex Mono',ui-monospace,monospace; --sans:'IBM Plex Sans',system-ui,sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#faf6f1; --bg-soft:#f2ebe2; --card:#ffffff; --card-hi:#fbf4ec;
+    --line:#e6dccf; --line-soft:#efe7dc; --text:#251d16; --muted:#6d6055; --faint:#9a8d80;
+    --ember:#dd5a1c; --ember-soft:#c4531d; --btn-text:#fff;
+    --st-active:#3f9f5b; --st-stalled:#dd5a1c; --st-done:#2f7fb8; --st-frozen:#9a8d80;
+    --glow:rgba(221,90,28,.07);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans)}
+  body{min-height:100vh;background:radial-gradient(120% 80% at 50% -10%, var(--glow), transparent 60%),var(--bg);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:28px 20px 64px}
+  a{color:inherit}
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--ember);box-shadow:0 0 14px var(--ember)}
+  .brand h1{font-size:18px;font-weight:600;margin:0;letter-spacing:.3px}
+  .brand span{color:var(--faint);font-family:var(--mono);font-size:12px}
+  .htools{display:flex;gap:8px;align-items:center}
+  .icon-btn{display:flex;align-items:center;justify-content:center;height:32px;min-width:32px;padding:0 10px;gap:6px;background:var(--bg-soft);border:1px solid var(--line-soft);border-radius:9px;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:12px;line-height:1}
+  .icon-btn:hover{color:var(--ember);border-color:var(--ember)}
+
+  .summary{display:flex;gap:18px;flex-wrap:wrap;background:linear-gradient(180deg,var(--card-hi),var(--card));border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:22px}
+  .sum{font-family:var(--mono)}
+  .sum b{font-size:20px;font-weight:600;display:inline-block;margin-right:6px}
+  .sum .lbl{display:inline-flex;align-items:center;gap:6px;color:var(--faint);font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+  .sdot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+  .sec-title{font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);margin:0 0 12px 2px}
+
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;align-items:start}
+  .pcard{background:var(--card);border:1px solid var(--line-soft);border-left:3px solid var(--st-frozen);border-radius:13px;padding:14px 15px;cursor:pointer;animation:rise .4s ease both}
+  .pcard.s-active{border-left-color:var(--st-active)} .pcard.s-stalled{border-left-color:var(--st-stalled)}
+  .pcard.s-done{border-left-color:var(--st-done)} .pcard.s-frozen{border-left-color:var(--st-frozen)}
+  .pcard.open{grid-column:1 / -1;cursor:default}
+  .ptop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .pname{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pname a{text-decoration:none;border-bottom:1px dotted var(--faint)}
+  .pname a:hover{color:var(--ember-soft);border-bottom-color:var(--ember-soft)}
+  .pname a::after{content:" \2197";font-size:10px;color:var(--faint)}
+  .pill{font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap;color:#0d0b0a}
+  .preview{color:var(--muted);font-size:13px;margin:10px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .preview.empty{color:var(--faint);font-style:italic}
+  .detail{display:none;margin-top:12px}
+  .pcard.open .detail{display:block}
+  .pcard.open .preview{display:none}
+  .dlabel{font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--faint);margin:12px 0 4px}
+  .dlabel:first-child{margin-top:0}
+  .dtext{white-space:pre-wrap;font-size:13px;line-height:1.6;color:var(--text)}
+  .dtext.empty{color:var(--faint);font-style:italic}
+  .pfoot{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:12px}
+  .pfoot.stale{color:var(--st-stalled)}
+
+  section{margin-bottom:24px}
+  .panel{background:var(--bg-soft);border:1px solid var(--line-soft);border-radius:14px;padding:16px}
+  .panel h3{margin:0 0 12px;font-size:13px;font-weight:600}
+  .field-row{display:flex;gap:10px;flex-wrap:wrap}
+  .field{flex:1 1 160px;min-width:0}
+  .field.sm{flex:0 1 150px}
+  .field.full{flex:1 1 100%}
+  .field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+  input,select,textarea{width:100%;background:var(--card);border:1px solid var(--line);color:var(--text);font-family:var(--sans);font-size:14px;padding:10px 11px;border-radius:9px;outline:none}
+  textarea{min-height:74px;line-height:1.5;resize:vertical}
+  input::placeholder,textarea::placeholder{color:var(--faint)}
+  input:focus,select:focus,textarea:focus{border-color:var(--ember);box-shadow:0 0 0 3px rgba(255,122,47,.12)}
+  .btn{margin-top:12px;background:var(--ember);color:var(--btn-text);border:0;font-family:var(--sans);font-weight:600;font-size:14px;padding:11px 16px;border-radius:10px;cursor:pointer}
+  .btn:hover{filter:brightness(1.07)} .btn:active{transform:translateY(1px)}
+
+  .blank{text-align:center;color:var(--faint);padding:30px 10px;font-size:14px;line-height:1.7}
+  .blank .big{font-size:30px;margin-bottom:6px}
+
+  .gate{max-width:430px;margin:60px auto;text-align:center}
+  .gate .big{font-size:34px;margin-bottom:10px}
+  .gate .tag{color:var(--muted);font-size:14px;margin:0 0 18px;line-height:1.6}
+  .gate input{margin-bottom:0}
+  .gate .err{color:var(--st-stalled);font-size:13px;margin-top:10px;min-height:1.2em}
+
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line-soft);color:var(--faint);font-family:var(--mono);font-size:11px;line-height:1.7}
+  footer code{color:var(--muted);word-break:break-all}
+
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .hidden{display:none !important}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="dot"></span>
+      <div><h1>Logbook</h1><span>self-hosted</span></div>
+    </div>
+    <div class="htools">
+      <button class="icon-btn" id="refresh" title="Refresh">&#x21bb;</button>
+      <button class="icon-btn" id="theme" title="Toggle theme"></button>
+      <button class="icon-btn hidden" id="signout" title="Forget token">Token</button>
+    </div>
+  </header>
+
+  <!-- Token gate -->
+  <div id="gate" class="gate hidden">
+    <div class="big">&#x1f4d6;</div>
+    <p class="tag"><strong>Logbook</strong> &mdash; where all your projects stand.<br>Enter your access token to open it. It is stored only in this browser.</p>
+    <input id="token-input" type="password" placeholder="access token" autocomplete="off">
+    <button class="btn" id="token-go" style="width:100%">Open Logbook</button>
+    <div class="err" id="gate-err"></div>
+  </div>
+
+  <!-- Board -->
+  <div id="app" class="hidden">
+    <div class="summary" id="summary"></div>
+
+    <section>
+      <p class="sec-title">Projects &middot; tap a card for details</p>
+      <div class="board" id="board"></div>
+    </section>
+
+    <section>
+      <p class="sec-title">Manual update</p>
+      <div class="panel">
+        <h3>Add or update a project</h3>
+        <div class="field-row">
+          <div class="field"><label>Project</label><input id="f-name" placeholder="e.g. my-app"></div>
+          <div class="field sm"><label>Status</label>
+            <select id="f-status">
+              <option value="active">active</option>
+              <option value="stalled">stalled</option>
+              <option value="done">done</option>
+              <option value="frozen">frozen</option>
+            </select>
+          </div>
+          <div class="field full"><label>Current state</label><textarea id="f-summary" placeholder="Where things stand right now (a few sentences is fine)"></textarea></div>
+          <div class="field full"><label>Next step</label><textarea id="f-next" placeholder="What to do next"></textarea></div>
+          <div class="field full"><label>Repo URL (optional)</label><input id="f-repo" type="url" placeholder="https://github.com/..."></div>
+        </div>
+        <button class="btn" id="f-save">Save</button>
+        <div class="err" id="form-err" style="color:var(--st-stalled);font-size:12px;margin-top:8px"></div>
+      </div>
+    </section>
+
+    <footer id="agent-help"></footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var TOKEN_KEY = "logbook-token";
+  var THEME_KEY = "logbook-theme";
+  var openIds = {}; // ids of expanded cards (kept across re-renders)
+
+  // ----- theme -----
+  var theme = localStorage.getItem(THEME_KEY) || "dark";
+  function applyTheme(){
+    document.documentElement.setAttribute("data-theme", theme);
+    $("theme").textContent = theme === "light" ? "\u{1F319}" : "\u2600\uFE0F";
+  }
+  applyTheme();
+  $("theme").onclick = function(){ theme = (theme === "light") ? "dark" : "light"; localStorage.setItem(THEME_KEY, theme); applyTheme(); };
+
+  // ----- token -----
+  function getToken(){ return localStorage.getItem(TOKEN_KEY) || ""; }
+  function setToken(t){ localStorage.setItem(TOKEN_KEY, t); }
+  function clearToken(){ localStorage.removeItem(TOKEN_KEY); }
+
+  var STATUS_META = {
+    active:  { label:"Active",  color:"var(--st-active)" },
+    stalled: { label:"Stalled", color:"var(--st-stalled)" },
+    done:    { label:"Done",    color:"var(--st-done)" },
+    frozen:  { label:"Frozen",  color:"var(--st-frozen)" }
+  };
+  var ORDER = { active:0, stalled:1, done:2, frozen:3 };
+  var STALE_MS = 7 * 24 * 60 * 60 * 1000;
+
+  function ago(ts){
+    if(!ts) return "no updates yet";
+    var s = Math.floor((Date.now() - ts)/1000);
+    if(s < 60) return "just now";
+    var m = Math.floor(s/60); if(m < 60) return m + "m ago";
+    var h = Math.floor(m/60); if(h < 24) return h + "h ago";
+    var d = Math.floor(h/24); return d + "d ago";
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m];}); }
+
+  function api(path, opts){
+    opts = opts || {};
+    opts.headers = Object.assign({ "Authorization": "Bearer " + getToken() }, opts.headers || {});
+    return fetch(path, opts);
+  }
+
+  function showGate(msg){
+    $("app").classList.add("hidden");
+    $("gate").classList.remove("hidden");
+    $("signout").classList.add("hidden");
+    $("gate-err").textContent = msg || "";
+    $("token-input").focus();
+  }
+  function showApp(){
+    $("gate").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    $("signout").classList.remove("hidden");
+    renderAgentHelp();
+  }
+
+  function load(){
+    if(!getToken()){ showGate(""); return; }
+    api("/api/projects").then(function(res){
+      if(res.status === 401){ clearToken(); showGate("That token was rejected. Try again."); return; }
+      if(!res.ok){ throw new Error("HTTP " + res.status); }
+      return res.json();
+    }).then(function(data){
+      if(!data) return;
+      showApp();
+      render(data.projects || []);
+    }).catch(function(e){
+      showApp();
+      $("board").innerHTML = '<div class="blank" style="grid-column:1/-1">Could not load (' + esc(e.message) + ').</div>';
+    });
+  }
+
+  function render(projects){
+    // summary (the temperature)
+    var counts = { active:0, stalled:0, done:0, frozen:0 };
+    projects.forEach(function(p){ if(counts[p.status] === undefined) counts[p.status]=0; counts[p.status]++; });
+    $("summary").innerHTML = ["active","stalled","done","frozen"].map(function(k){
+      return '<div class="sum"><b>'+counts[k]+'</b><span class="lbl"><span class="sdot" style="background:'+STATUS_META[k].color+'"></span>'+STATUS_META[k].label+'</span></div>';
+    }).join("");
+
+    if(projects.length === 0){
+      $("board").innerHTML = '<div class="blank" style="grid-column:1/-1"><div class="big">\u{1F4D6}</div>No projects yet.<br>Add one below, or have your agent POST to /api/status.</div>';
+      return;
+    }
+
+    var sorted = projects.slice().sort(function(a,b){
+      var d = (ORDER[a.status]===undefined?9:ORDER[a.status]) - (ORDER[b.status]===undefined?9:ORDER[b.status]);
+      if(d !== 0) return d;
+      return (b.updatedAt||0) - (a.updatedAt||0);
+    });
+
+    $("board").innerHTML = sorted.map(function(p){
+      var meta = STATUS_META[p.status] || { label:p.status, color:"var(--st-frozen)" };
+      var nameHtml = p.repo
+        ? '<a href="'+esc(p.repo)+'" target="_blank" rel="noopener noreferrer">'+esc(p.name)+'</a>'
+        : esc(p.name);
+      var stale = (p.status === "active" && p.updatedAt && (Date.now()-p.updatedAt) > STALE_MS);
+      var open = openIds[p.id] ? " open" : "";
+      var previewText = p.summary || p.next || "";
+      var preview = previewText
+        ? '<div class="preview">'+esc(previewText)+'</div>'
+        : '<div class="preview empty">no notes yet \u2014 tap to add</div>';
+      var detail =
+        '<div class="detail">'
+        + '<div class="dlabel">Current state</div><div class="dtext'+(p.summary?'':' empty')+'">'+(p.summary?esc(p.summary):"\u2014")+'</div>'
+        + '<div class="dlabel">Next step</div><div class="dtext'+(p.next?'':' empty')+'">'+(p.next?esc(p.next):"\u2014")+'</div>'
+        + '</div>';
+      return ''
+        + '<div class="pcard s-'+esc(p.status)+open+'" data-id="'+esc(p.id)+'">'
+        +   '<div class="ptop"><span class="pname">'+nameHtml+'</span>'
+        +     '<span class="pill" style="background:'+meta.color+'">'+esc(meta.label)+'</span></div>'
+        +   preview
+        +   detail
+        +   '<div class="pfoot'+(stale?' stale':'')+'">updated '+ago(p.updatedAt)+(stale?' \u00B7 stale':'')+'</div>'
+        + '</div>';
+    }).join("");
+  }
+
+  // expand/collapse a card (ignore clicks on the repo link)
+  $("board").addEventListener("click", function(e){
+    if(e.target.closest("a")) return;
+    var card = e.target.closest(".pcard");
+    if(!card) return;
+    var id = card.getAttribute("data-id");
+    if(!id) return;
+    if(openIds[id]){ delete openIds[id]; card.classList.remove("open"); }
+    else { openIds[id] = true; card.classList.add("open"); }
+  });
+
+  function renderAgentHelp(){
+    var origin = location.origin;
+    $("agent-help").innerHTML =
+      'Agent update &mdash; POST to <code>'+esc(origin)+'/api/status</code> '
+      + 'with header <code>Authorization: Bearer &lt;token&gt;</code> and a JSON body like '
+      + '<code>{"project":"my-app","status":"active","summary":"...","next":"...","repo":"https://github.com/you/my-app"}</code> '
+      + '(example values). Tell your coding agent to call it at the end of each session.';
+  }
+
+  // ----- gate -----
+  function submitToken(){
+    var t = $("token-input").value.trim();
+    if(!t) return;
+    setToken(t); $("token-input").value = ""; load();
+  }
+  $("token-go").onclick = submitToken;
+  $("token-input").addEventListener("keydown", function(e){ if(e.key==="Enter") submitToken(); });
+  $("signout").onclick = function(){ clearToken(); showGate(""); };
+  $("refresh").onclick = function(){ load(); };
+
+  // ----- manual update -----
+  $("f-save").onclick = function(){
+    var name = $("f-name").value.trim();
+    if(!name){ $("form-err").textContent = "Project name is required."; return; }
+    var bodyObj = {
+      project: name,
+      status: $("f-status").value,
+      summary: $("f-summary").value,
+      next: $("f-next").value,
+      repo: $("f-repo").value.trim()
+    };
+    $("form-err").textContent = "";
+    api("/api/status", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(bodyObj)
+    }).then(function(res){
+      if(res.status === 401){ clearToken(); showGate("Token rejected."); return; }
+      if(!res.ok){ return res.json().then(function(j){ throw new Error(j.error || ("HTTP "+res.status)); }); }
+      return res.json();
+    }).then(function(j){
+      if(!j) return;
+      $("f-name").value=""; $("f-summary").value=""; $("f-next").value=""; $("f-repo").value="";
+      load();
+    }).catch(function(e){ $("form-err").textContent = e.message; });
+  };
+
+  // ----- start + light polling -----
+  load();
+  setInterval(function(){ if(!$("app").classList.contains("hidden")) load(); }, 30000);
+})();
+</script>

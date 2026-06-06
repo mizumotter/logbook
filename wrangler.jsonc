@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "logbook",
+  "main": "src/index.js",
+  // Set this to today's date or later
+  "compatibility_date": "2026-06-05",
+
+  // Static assets (the board UI). Everything except /api/* is served from here.
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+
+  // Workers KV. Replace <KV_ID_HERE> with the id from:
+  //   npx wrangler kv namespace create LOGBOOK_KV
+  "kv_namespaces": [
+    { "binding": "LOGBOOK_KV", "id": "<KV_ID_HERE>" }
+  ]
+
+  // The write/read token is NOT stored here.
+  // Set it as a secret:  npx wrangler secret put LOGBOOK_TOKEN
+}
