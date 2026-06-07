@@ -74,9 +74,9 @@
 
   /* drifting aurora blobs — large, blurred, color-shifting */
   .aurora{position:absolute;border-radius:50%;filter:blur(90px) saturate(1.2);mix-blend-mode:screen;will-change:transform,opacity,filter}
-  .aurora.a1{width:62vw;height:62vw;background:radial-gradient(closest-side, var(--neon-cyan), transparent 70%);top:-12vw;left:-14vw;animation:nebula1 14s ease-in-out infinite, beatBlur 1.2s ease-in-out infinite}
-  .aurora.a2{width:58vw;height:58vw;background:radial-gradient(closest-side, var(--neon-magenta), transparent 70%);bottom:-18vw;right:-14vw;animation:nebula2 17s ease-in-out infinite, beatBlur 1.2s ease-in-out infinite -0.4s}
-  .aurora.a3{width:72vw;height:72vw;background:radial-gradient(closest-side, var(--neon-violet), transparent 70%);top:22vh;left:18vw;animation:nebula3 21s ease-in-out infinite, beatBlur 1.2s ease-in-out infinite -0.8s}
+  .aurora.a1{width:62vw;height:62vw;background:radial-gradient(closest-side, var(--neon-cyan), transparent 70%);top:-12vw;left:-14vw;animation:nebula1 22s ease-in-out infinite, beatBlur 2.6s ease-in-out infinite}
+  .aurora.a2{width:58vw;height:58vw;background:radial-gradient(closest-side, var(--neon-magenta), transparent 70%);bottom:-18vw;right:-14vw;animation:nebula2 26s ease-in-out infinite, beatBlur 2.6s ease-in-out infinite -0.9s}
+  .aurora.a3{width:72vw;height:72vw;background:radial-gradient(closest-side, var(--neon-violet), transparent 70%);top:22vh;left:18vw;animation:nebula3 30s ease-in-out infinite, beatBlur 2.6s ease-in-out infinite -1.7s}
   @keyframes nebula1{
     0%,100%{transform:translate(0,0) scale(1)        rotate(0);opacity:.55}
     50%    {transform:translate(22vw,16vh) scale(1.25) rotate(40deg);opacity:.85}
@@ -90,36 +90,32 @@
     50%    {transform:translate(-18vw,20vh) scale(1.08) rotate(20deg);opacity:.72}
   }
   @keyframes beatBlur{
-    0%,100%{filter:blur(90px) saturate(1.2) brightness(1)}
-    8%     {filter:blur(70px) saturate(1.6) brightness(1.45)}
-    18%    {filter:blur(82px) saturate(1.3) brightness(1.05)}
-    28%    {filter:blur(74px) saturate(1.55) brightness(1.30)}
-    50%    {filter:blur(90px) saturate(1.2) brightness(.95)}
+    0%,100%{filter:blur(94px) saturate(1.2) brightness(1)}
+    35%    {filter:blur(78px) saturate(1.35) brightness(1.20)}
+    65%    {filter:blur(94px) saturate(1.2) brightness(.98)}
   }
 
-  /* heartbeat overlay — full screen flash, synced to the rings */
+  /* heartbeat overlay — gentle, slow flash */
   .heartbeat{position:absolute;inset:-20%;
-    background:radial-gradient(40% 40% at 50% 50%, rgba(0,231,255,.10), transparent 70%);
-    mix-blend-mode:screen;opacity:0;animation:beatFlash 1.2s ease-in-out infinite;will-change:opacity,transform}
+    background:radial-gradient(40% 40% at 50% 50%, rgba(0,231,255,.08), transparent 70%);
+    mix-blend-mode:screen;opacity:0;animation:beatFlash 2.6s ease-in-out infinite;will-change:opacity,transform}
   @keyframes beatFlash{
-    0%,100%{opacity:0;       transform:scale(.92)}
-    8%     {opacity:.85;     transform:scale(1.00)}
-    20%    {opacity:.15;     transform:scale(1.04)}
-    30%    {opacity:.65;     transform:scale(1.02)}
-    45%    {opacity:.05;     transform:scale(.98)}
+    0%,100%{opacity:0;       transform:scale(.96)}
+    40%    {opacity:.30;     transform:scale(1.01)}
+    70%    {opacity:.04;     transform:scale(.99)}
   }
 
-  /* expanding rings from the center — three colors, time-staggered */
-  .pulse-ring{position:absolute;top:50%;left:50%;width:6vmin;height:6vmin;margin:-3vmin 0 0 -3vmin;
-    border-radius:50%;border:1.5px solid var(--neon-cyan);opacity:0;
-    box-shadow:0 0 20px var(--neon-cyan), inset 0 0 12px rgba(0,231,255,.45);
-    will-change:transform,opacity;animation:ringOut 2.4s cubic-bezier(.18,.85,.22,1) infinite}
-  .pulse-ring.r2{animation-delay:.4s;border-color:var(--neon-violet);box-shadow:0 0 20px var(--neon-violet), inset 0 0 12px rgba(157,108,255,.45)}
-  .pulse-ring.r3{animation-delay:.8s;border-color:var(--neon-magenta);box-shadow:0 0 20px var(--neon-magenta), inset 0 0 12px rgba(255,61,200,.45)}
+  /* expanding rings from the center — slow, blurred, "boom" feel */
+  .pulse-ring{position:absolute;top:50%;left:50%;width:10vmin;height:10vmin;margin:-5vmin 0 0 -5vmin;
+    border-radius:50%;border:2px solid var(--neon-cyan);opacity:0;filter:blur(2.5px);
+    box-shadow:0 0 40px var(--neon-cyan), inset 0 0 24px rgba(0,231,255,.40);
+    will-change:transform,opacity;animation:ringOut 7.5s ease-out infinite}
+  .pulse-ring.r2{animation-delay:2.5s;border-color:var(--neon-violet);box-shadow:0 0 40px var(--neon-violet), inset 0 0 24px rgba(157,108,255,.40)}
+  .pulse-ring.r3{animation-delay:5s;border-color:var(--neon-magenta);box-shadow:0 0 40px var(--neon-magenta), inset 0 0 24px rgba(255,61,200,.40)}
   @keyframes ringOut{
-    0%   {transform:scale(.4); opacity:0}
-    8%   {opacity:.9}
-    100% {transform:scale(32); opacity:0}
+    0%   {transform:scale(.5); opacity:0; filter:blur(1px)}
+    12%  {opacity:.55;          filter:blur(2.5px)}
+    100% {transform:scale(18);  opacity:0; filter:blur(8px)}
   }
 
   /* parallax starfield (kept) */
@@ -132,22 +128,20 @@
   @keyframes drift3{from{transform:translate3d(0,0,0)}to{transform:translate3d(-6%,-14%,0)}}
   @keyframes twinkle{0%,100%{filter:brightness(.85)}50%{filter:brightness(1.55)}}
 
-  /* HUD grid — pulses in sync with the heartbeat */
-  .grid{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.30;
+  /* HUD grid — gentle breathing in sync with the heartbeat */
+  .grid{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.25;
     background-image:
       linear-gradient(to right, var(--line-soft) 1px, transparent 1px),
       linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px);
     background-size:80px 80px,80px 80px;
     mask-image:radial-gradient(120% 80% at 50% 30%, #000 30%, transparent 90%);
     -webkit-mask-image:radial-gradient(120% 80% at 50% 30%, #000 30%, transparent 90%);
-    animation:gridBeat 1.2s ease-in-out infinite;
+    animation:gridBeat 2.6s ease-in-out infinite;
   }
   @keyframes gridBeat{
-    0%,100%{opacity:.25}
-    8%     {opacity:.70}
-    20%    {opacity:.40}
-    30%    {opacity:.60}
-    50%    {opacity:.25}
+    0%,100%{opacity:.22}
+    40%    {opacity:.38}
+    70%    {opacity:.24}
   }
 
   /* sweeping scanline */
