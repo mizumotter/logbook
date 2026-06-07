@@ -11,6 +11,12 @@
 
 const STATUSES = ["active", "stalled", "done", "frozen"];
 
+// Per-field length caps. Keep KV value compact and reject obvious DoS payloads.
+const LIMITS = { project: 100, summary: 5000, next: 2000, repo: 500 };
+
+function tooLong(s, max) { return typeof s === "string" && s.length > max; }
+function isValidRepoUrl(s) { return s === "" || /^https?:\/\//i.test(s); }
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -61,6 +67,7 @@ async function handleUpsert(request, env) {
 
   const name = (body.project || body.name || "").toString().trim();
   if (!name) return json({ error: "field 'project' is required" }, 400);
+  if (tooLong(name, LIMITS.project)) return json({ error: "project name too long (max " + LIMITS.project + " chars)" }, 400);
 
   const projects = await readProjects(env);
   let p = projects.find(function (x) {
@@ -71,16 +78,29 @@ async function handleUpsert(request, env) {
     projects.push(p);
   }
 
-  // merge only the provided fields (partial updates are fine)
+  // merge only the provided fields (partial updates are fine); validate each.
   if (body.status !== undefined) {
     if (!STATUSES.includes(body.status)) {
       return json({ error: "status must be one of: " + STATUSES.join(", ") }, 400);
     }
     p.status = body.status;
   }
-  if (body.summary !== undefined) p.summary = (body.summary === null ? "" : String(body.summary));
-  if (body.next !== undefined) p.next = (body.next === null ? "" : String(body.next));
-  if (body.repo !== undefined) p.repo = (body.repo === null ? "" : String(body.repo));
+  if (body.summary !== undefined) {
+    const s = body.summary === null ? "" : String(body.summary);
+    if (tooLong(s, LIMITS.summary)) return json({ error: "summary too long (max " + LIMITS.summary + " chars)" }, 400);
+    p.summary = s;
+  }
+  if (body.next !== undefined) {
+    const s = body.next === null ? "" : String(body.next);
+    if (tooLong(s, LIMITS.next)) return json({ error: "next too long (max " + LIMITS.next + " chars)" }, 400);
+    p.next = s;
+  }
+  if (body.repo !== undefined) {
+    const s = (body.repo === null ? "" : String(body.repo)).trim();
+    if (tooLong(s, LIMITS.repo)) return json({ error: "repo too long (max " + LIMITS.repo + " chars)" }, 400);
+    if (!isValidRepoUrl(s)) return json({ error: "repo must start with http:// or https://" }, 400);
+    p.repo = s;
+  }
   p.updatedAt = Date.now(); // server-side, can't be faked
 
   await writeProjects(env, projects);
@@ -103,6 +123,12 @@ async function handleDelete(request, env, id) {
 function json(obj, status) {
   return new Response(JSON.stringify(obj), {
     status: status || 200,
-    headers: { "Content-Type": "application/json; charset=utf-8" }
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer",
+      "X-Frame-Options": "DENY",
+      "Cache-Control": "no-store"
+    }
   });
 }
