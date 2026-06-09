@@ -366,11 +366,26 @@
 
   .hidden{display:none !important}
 
+  /* demo mode banner */
+  .demo-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    background:linear-gradient(90deg, rgba(0,231,255,.10), rgba(157,108,255,.10));
+    border:1px solid var(--line);border-radius:12px;padding:11px 16px;margin-bottom:18px;
+    font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .demo-banner .dtag{color:var(--neon-cyan)}
+  .demo-banner .dlink{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px}
+  .demo-banner .dlink:hover{color:var(--neon-cyan);border-bottom-color:var(--neon-cyan)}
+  .gate .demo-try{display:block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--line);padding-bottom:2px;display:inline-block}
+  .gate .demo-try:hover{color:var(--neon-cyan);border-bottom-color:var(--neon-cyan)}
+
   /* honor reduced motion */
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation:none !important;transition:none !important}
     .stars{display:none}
   }
+  /* ?still=1: kill animations / transitions so headless screenshots aren't mid-fade */
+  :root.still *, :root.still *::before, :root.still *::after{animation:none !important;transition:none !important}
 
   /* small screens tuning */
   @media (max-width: 560px){
@@ -423,11 +438,16 @@
     <div class="gdiv">Already deployed?</div>
     <input id="token-input" type="password" placeholder="access key" autocomplete="off">
     <button class="btn" id="token-go" style="width:100%;margin-top:14px">Engage</button>
+    <a class="demo-try" href="/?demo=1">or try a demo first &mdash; no token needed &rarr;</a>
     <div class="err" id="gate-err"></div>
   </div>
 
   <!-- Board -->
   <div id="app" class="hidden">
+    <div id="demo-banner" class="demo-banner hidden">
+      <span class="dtag">// Demo mode &middot; sample data, view-only</span>
+      <a class="dlink" href="https://github.com/mizumotter/logbook" target="_blank" rel="noopener noreferrer">Deploy your own &rarr;</a>
+    </div>
     <div class="summary" id="summary"></div>
 
     <section>
@@ -435,7 +455,7 @@
       <div class="board" id="board"></div>
     </section>
 
-    <section>
+    <section data-demo-hide>
       <p class="sec-title">Manual update</p>
       <div class="panel">
         <h3 id="panel-title">Add or update a project<span id="editing-tag" class="editing-tag hidden"></span></h3>
@@ -472,6 +492,52 @@
   var openIds = {};
   var currentProjects = [];
   var editingId = null;
+  var IS_DEMO = /[?&]demo=1\b/.test(location.search);
+  if(/[?&]still=1\b/.test(location.search)) document.documentElement.classList.add("still");
+
+  // ----- dummy data for ?demo=1 mode -----
+  var DEMO_PROJECTS = (function(){
+    var now = Date.now();
+    var H = 3600*1000, D = 24*H;
+    return [
+      { id:"d-1", name:"worldmonitor", status:"active",
+        summary:"3D globe dashboard on deck.gl + MapLibre, served by 45+ Vercel Edge Functions with a 3-layer cache (memory → Redis → upstream). Tokyo PoP holding steady at p95 ~140ms.",
+        next:"Lift Asia cache hit rate from 60% to 80% — suspect a key collision in the JP region",
+        repo:"https://github.com/example/worldmonitor", updatedAt: now - 2*H },
+      { id:"d-2", name:"playroom", status:"active",
+        summary:"AI-agent-only social network on Next.js 16 + Supabase RLS. World ID v4 auth wired; 2-layer guardrails (regex → LLM) passing pgTAP.",
+        next:"Partition the posts table before agent population doubles",
+        repo:"https://github.com/example/playroom", updatedAt: now - 6*H },
+      { id:"d-3", name:"agent-inbox", status:"active",
+        summary:"E2E encrypted messaging for AI agents — 3 services (signer / gateway / runtime), CI green (95 + 9 + 6 tests).",
+        next:"Add DPoP replay-attack test cases to the gateway suite",
+        repo:"", updatedAt: now - 11*H },
+      { id:"d-4", name:"agent-to-physical", status:"stalled",
+        summary:"Digital agent → physical-world action bridge (Rust/Go/Python/Solidity). Phase-1 design + single-VPS infra ready, but blocked on hardware procurement.",
+        next:"Re-engage once World ID 4.0 BAN spec is finalized",
+        repo:"", updatedAt: now - 12*D },
+      { id:"d-6", name:"meishi-investigator", status:"done",
+        summary:"Discord bot for business-card OCR + auto research (Gemini Vision). v1.0 shipped, used daily, no open bugs.",
+        next:"Maybe v2 with calendar integration — not urgent",
+        repo:"", updatedAt: now - 4*D },
+      { id:"d-7", name:"github-ai-reporter", status:"active",
+        summary:"Cron job surfacing trending AI repos, runs Gemini analysis, posts daily digest to Slack.",
+        next:"Add embedding-based dedupe so yesterday's news doesn't reappear as today's",
+        repo:"", updatedAt: now - 9*D },
+      { id:"d-8", name:"shichusuimei-app", status:"frozen",
+        summary:"Streamlit + OpenAI + lunar-python. Worked as a personal experiment, never had an audience.",
+        next:"On ice — revisit only if asked",
+        repo:"", updatedAt: now - 60*D },
+      { id:"d-9", name:"mitsukaru", status:"stalled",
+        summary:"AI-driven matching platform on AWS ECS. Web + API run locally, but onboarding flow needs rethink before beta.",
+        next:"Sketch a 2-screen onboarding flow that doesn't require email signup",
+        repo:"", updatedAt: now - 18*D },
+      { id:"d-10", name:"mine-rogue", status:"done",
+        summary:"Tiny roguelike built in React + Vite as a weekend hack. Plays surprisingly well.",
+        next:"Done. Maybe port to mobile if I get bored.",
+        repo:"", updatedAt: now - 7*D }
+    ];
+  })();
 
   // ----- starfield: paint many tiny dots via box-shadow on a ::after pseudo of each layer -----
   function genStars(count, sizeRange){
@@ -578,7 +644,16 @@
     renderAgentHelp();
   }
 
+  function enterDemoMode(){
+    showApp();
+    $("demo-banner").classList.remove("hidden");
+    $("signout").classList.add("hidden");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-demo-hide]"), function(el){ el.classList.add("hidden"); });
+    render(DEMO_PROJECTS);
+  }
+
   function load(){
+    if(IS_DEMO){ enterDemoMode(); return; }
     if(!getToken()){ showGate(""); return; }
     api("/api/projects").then(function(res){
       if(res.status === 401){ clearToken(); showGate("Access denied. Try a different key."); return; }
@@ -628,10 +703,11 @@
         '<div class="detail">'
         + '<div class="dlabel">Current state</div><div class="dtext'+(p.summary?'':' empty')+'">'+(p.summary?esc(p.summary):"—")+'</div>'
         + '<div class="dlabel">Next step</div><div class="dtext'+(p.next?'':' empty')+'">'+(p.next?esc(p.next):"—")+'</div>'
-        + '<div class="actions">'
-        +   '<button type="button" class="action" data-action="edit">Edit</button>'
-        +   '<button type="button" class="action danger" data-action="delete">Delete</button>'
-        + '</div>'
+        + (IS_DEMO ? '' :
+            '<div class="actions">'
+            + '<button type="button" class="action" data-action="edit">Edit</button>'
+            + '<button type="button" class="action danger" data-action="delete">Delete</button>'
+            + '</div>')
         + '</div>';
       var delay = Math.min(idx, 10) * 50; // stagger cap
       return ''
@@ -727,6 +803,13 @@
   $("f-cancel").onclick = exitEdit;
 
   function renderAgentHelp(){
+    if(IS_DEMO){
+      $("agent-help").innerHTML =
+        '// This is a static demo with fake projects. '
+        + '<a href="https://github.com/mizumotter/logbook" target="_blank" rel="noopener noreferrer">Deploy your own copy</a> '
+        + 'to get a real board your AI coding agent can keep up to date.';
+      return;
+    }
     var origin = location.origin;
     $("agent-help").innerHTML =
       '// Agent update &mdash; POST to <code>'+esc(origin)+'/api/status</code> '
@@ -771,6 +854,8 @@
   };
 
   load();
-  setInterval(function(){ if(!$("app").classList.contains("hidden")) load(); }, 30000);
+  if(!IS_DEMO){
+    setInterval(function(){ if(!$("app").classList.contains("hidden")) load(); }, 30000);
+  }
 })();
 </script>
