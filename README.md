@@ -6,7 +6,7 @@ A tiny self-hosted board that shows the current state of every project you're bu
 
 Built for indie hackers and AI builders who ship a lot of small projects and lose track of what's active, what's stalled, and what to pick up next.
 
-![Logbook screenshot — deep-space themed board with 9 example projects](assets/screenshot.png)
+![Logbook screenshot — deep-space themed board with one sample project expanded above a grid of 9 more](assets/screenshot.png)
 
 **Try the live demo:** [logbook.solocamp.work/?demo=1](https://logbook.solocamp.work/?demo=1) (sample data, no token needed).
 For your own board, see [DEPLOY.md](DEPLOY.md).
