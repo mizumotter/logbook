@@ -500,42 +500,46 @@
     var now = Date.now();
     var H = 3600*1000, D = 24*H;
     return [
-      { id:"d-1", name:"worldmonitor", status:"active",
-        summary:"3D globe dashboard on deck.gl + MapLibre, served by 45+ Vercel Edge Functions with a 3-layer cache (memory → Redis → upstream). Tokyo PoP holding steady at p95 ~140ms.",
-        next:"Lift Asia cache hit rate from 60% to 80% — suspect a key collision in the JP region",
-        repo:"https://github.com/example/worldmonitor", updatedAt: now - 2*H },
-      { id:"d-2", name:"playroom", status:"active",
-        summary:"AI-agent-only social network on Next.js 16 + Supabase RLS. World ID v4 auth wired; 2-layer guardrails (regex → LLM) passing pgTAP.",
-        next:"Partition the posts table before agent population doubles",
-        repo:"https://github.com/example/playroom", updatedAt: now - 6*H },
-      { id:"d-3", name:"agent-inbox", status:"active",
-        summary:"E2E encrypted messaging for AI agents — 3 services (signer / gateway / runtime), CI green (95 + 9 + 6 tests).",
-        next:"Add DPoP replay-attack test cases to the gateway suite",
+      { id:"d-1", name:"sample-api", status:"active",
+        summary:"Sample project — pretend this is a REST API for a small dashboard.\nAuth and rate limiting are in place; the last few endpoints are still in flight. Staging looks good.",
+        next:"Finish the /reports endpoint and write the migration for the audit log table.",
+        repo:"https://github.com/acme/sample-api", updatedAt: now - 2*H },
+      { id:"d-2", name:"marketing-site", status:"active",
+        summary:"Pretend marketing site rebuild on a new design system. Hero, pricing, and docs sections shipped this sprint.",
+        next:"Add a case-studies section and wire it up to the CMS",
+        repo:"https://github.com/acme/marketing-site", updatedAt: now - 6*H },
+      { id:"d-3", name:"mobile-pwa", status:"active",
+        summary:"Offline-first PWA example with an IndexedDB sync layer. Beta testers onboarded last week.",
+        next:"Investigate the sync conflict two testers reported on Android",
         repo:"", updatedAt: now - 11*H },
-      { id:"d-4", name:"agent-to-physical", status:"stalled",
-        summary:"Digital agent → physical-world action bridge (Rust/Go/Python/Solidity). Phase-1 design + single-VPS infra ready, but blocked on hardware procurement.",
-        next:"Re-engage once World ID 4.0 BAN spec is finalized",
-        repo:"", updatedAt: now - 12*D },
-      { id:"d-6", name:"meishi-investigator", status:"done",
-        summary:"Discord bot for business-card OCR + auto research (Gemini Vision). v1.0 shipped, used daily, no open bugs.",
-        next:"Maybe v2 with calendar integration — not urgent",
-        repo:"", updatedAt: now - 4*D },
-      { id:"d-7", name:"github-ai-reporter", status:"active",
-        summary:"Cron job surfacing trending AI repos, runs Gemini analysis, posts daily digest to Slack.",
-        next:"Add embedding-based dedupe so yesterday's news doesn't reappear as today's",
+      { id:"d-4", name:"docs-refresh", status:"active",
+        summary:"Internal CLI tool — stable in production, but the README hasn't been touched in months.",
+        next:"Refresh the README before sharing the tool more widely",
         repo:"", updatedAt: now - 9*D },
-      { id:"d-8", name:"shichusuimei-app", status:"frozen",
-        summary:"Streamlit + OpenAI + lunar-python. Worked as a personal experiment, never had an audience.",
-        next:"On ice — revisit only if asked",
-        repo:"", updatedAt: now - 60*D },
-      { id:"d-9", name:"mitsukaru", status:"stalled",
-        summary:"AI-driven matching platform on AWS ECS. Web + API run locally, but onboarding flow needs rethink before beta.",
-        next:"Sketch a 2-screen onboarding flow that doesn't require email signup",
+      { id:"d-5", name:"analytics-rewrite", status:"stalled",
+        summary:"Rewriting an analytics pipeline from Redshift to ClickHouse. Schema design done; blocked on infra approval.",
+        next:"Ping the infra team about ClickHouse cluster sizing",
+        repo:"", updatedAt: now - 12*D },
+      { id:"d-6", name:"billing-rewrite", status:"stalled",
+        summary:"Pulling the old billing code apart to migrate onto Stripe Billing. Waiting on legal review of the new checkout flow.",
+        next:"Follow up with legal next sprint",
         repo:"", updatedAt: now - 18*D },
-      { id:"d-10", name:"mine-rogue", status:"done",
-        summary:"Tiny roguelike built in React + Vite as a weekend hack. Plays surprisingly well.",
-        next:"Done. Maybe port to mobile if I get bored.",
-        repo:"", updatedAt: now - 7*D }
+      { id:"d-7", name:"photo-gallery", status:"done",
+        summary:"Personal photo gallery — shipped v1 last month. Stable, no open issues.",
+        next:"Done. Maybe add an EXIF viewer if I feel like it.",
+        repo:"", updatedAt: now - 4*D },
+      { id:"d-8", name:"weekend-game", status:"done",
+        summary:"Tiny puzzle game in vanilla JS. Played by friends, no bug reports.",
+        next:"Done — port to mobile someday?",
+        repo:"", updatedAt: now - 7*D },
+      { id:"d-9", name:"old-blog", status:"frozen",
+        summary:"Static blog from 2019. Still serves traffic, but no new posts in years.",
+        next:"On ice — leave running",
+        repo:"", updatedAt: now - 60*D },
+      { id:"d-10", name:"data-pipeline", status:"active",
+        summary:"Nightly ETL moving data from Postgres into the warehouse. Stable but slow on the largest table.",
+        next:"Profile the run and parallelize the biggest batch",
+        repo:"", updatedAt: now - 26*H }
     ];
   })();
 
@@ -645,6 +649,9 @@
   }
 
   function enterDemoMode(){
+    // Pre-open the first card so the expanded view (current state /
+    // next step) is visible at a glance.
+    openIds["d-1"] = true;
     showApp();
     $("demo-banner").classList.remove("hidden");
     $("signout").classList.add("hidden");
