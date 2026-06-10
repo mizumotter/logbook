@@ -639,7 +639,7 @@
   @keyframes tickermove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
   /* ===== theme: neko — a sunlit room with a resident black cat ===== */
-  :root[data-theme="neko"]{
+  :root[data-theme="cat"]{
     --bg:#f7efe2; --bg-2:#f1e5d0; --bg-soft:rgba(255,251,243,.72);
     --card:#fffaf2; --card-hi:#fffdf8;
     --line:rgba(94,72,50,.16); --line-strong:rgba(94,72,50,.36); --line-soft:rgba(94,72,50,.09);
@@ -654,27 +654,27 @@
     --aurora-1:rgba(255,205,130,.45); --aurora-2:rgba(255,170,95,.30); --aurora-3:rgba(255,240,210,.60);
     --display:'Quicksand',var(--sans);
   }
-  [data-theme="neko"] body{background:linear-gradient(180deg,var(--bg),var(--bg-2));background-attachment:fixed}
-  [data-theme="neko"] .stars,[data-theme="neko"] .grid,[data-theme="neko"] .scan,
-  [data-theme="neko"] .heartbeat,[data-theme="neko"] .pulse-ring,[data-theme="neko"] .boot{display:none}
-  [data-theme="neko"] .aurora{mix-blend-mode:normal;filter:blur(100px) saturate(1)}
-  [data-theme="neko"] .aurora.a1{animation:nebula1 34s ease-in-out infinite}
-  [data-theme="neko"] .aurora.a2{animation:nebula2 40s ease-in-out infinite}
-  [data-theme="neko"] .aurora.a3{animation:nebula3 46s ease-in-out infinite}
-  [data-theme="neko"] .pcard{border-radius:16px}
-  [data-theme="neko"] .pcard:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(94,72,50,.14)}
-  [data-theme="neko"] .pname{text-transform:none;letter-spacing:.3px;font-weight:600;font-size:16px}
-  [data-theme="neko"] .pill{border:none;text-shadow:none;padding:4px 11px}
-  [data-theme="neko"] .pill.active{background:rgba(95,174,110,.16)}
-  [data-theme="neko"] .pill.stalled{background:rgba(224,122,79,.18)}
-  [data-theme="neko"] .pill.done{background:rgba(154,127,201,.16)}
-  [data-theme="neko"] .pill.frozen{background:rgba(163,154,141,.20)}
-  [data-theme="neko"] .summary{border-radius:18px}
-  [data-theme="neko"] .panel{border-radius:16px}
-  [data-theme="neko"] .btn{border-radius:12px}
-  [data-theme="neko"] .sec-title::before{content:"\1F43E "}
-  [data-theme="neko"] .gate .big{filter:none}
-  [data-theme="neko"] .meteor{width:5px;height:5px;border-radius:50%;background:rgba(255,205,140,.65);
+  [data-theme="cat"] body{background:linear-gradient(180deg,var(--bg),var(--bg-2));background-attachment:fixed}
+  [data-theme="cat"] .stars,[data-theme="cat"] .grid,[data-theme="cat"] .scan,
+  [data-theme="cat"] .heartbeat,[data-theme="cat"] .pulse-ring,[data-theme="cat"] .boot{display:none}
+  [data-theme="cat"] .aurora{mix-blend-mode:normal;filter:blur(100px) saturate(1)}
+  [data-theme="cat"] .aurora.a1{animation:nebula1 34s ease-in-out infinite}
+  [data-theme="cat"] .aurora.a2{animation:nebula2 40s ease-in-out infinite}
+  [data-theme="cat"] .aurora.a3{animation:nebula3 46s ease-in-out infinite}
+  [data-theme="cat"] .pcard{border-radius:16px}
+  [data-theme="cat"] .pcard:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(94,72,50,.14)}
+  [data-theme="cat"] .pname{text-transform:none;letter-spacing:.3px;font-weight:600;font-size:16px}
+  [data-theme="cat"] .pill{border:none;text-shadow:none;padding:4px 11px}
+  [data-theme="cat"] .pill.active{background:rgba(95,174,110,.16)}
+  [data-theme="cat"] .pill.stalled{background:rgba(224,122,79,.18)}
+  [data-theme="cat"] .pill.done{background:rgba(154,127,201,.16)}
+  [data-theme="cat"] .pill.frozen{background:rgba(163,154,141,.20)}
+  [data-theme="cat"] .summary{border-radius:18px}
+  [data-theme="cat"] .panel{border-radius:16px}
+  [data-theme="cat"] .btn{border-radius:12px}
+  [data-theme="cat"] .sec-title::before{content:"\1F43E "}
+  [data-theme="cat"] .gate .big{filter:none}
+  [data-theme="cat"] .meteor{width:5px;height:5px;border-radius:50%;background:rgba(255,205,140,.65);
     box-shadow:0 0 6px rgba(255,190,110,.5);filter:blur(.5px);animation-name:moteFall}
   @keyframes moteFall{
     0%  {transform:translate(0,0);opacity:0}
@@ -684,17 +684,29 @@
   }
 
   /* the cat itself (shown only in neko theme; poses driven by JS) */
-  [data-theme="neko"] .neko{display:block}
+  [data-theme="cat"] .neko{display:block}
   .neko{position:fixed;z-index:50;width:92px;height:64px;left:24px;bottom:0;pointer-events:none;transition:left linear}
   .nk-body{position:absolute;left:4px;bottom:8px;width:60px;height:32px;background:#332e29;border-radius:50% 46% 44% 48%/64% 70% 38% 42%}
-  .nk-head{position:absolute;right:0;bottom:29px;width:34px;height:30px;background:#332e29;border-radius:48%}
+  .nk-head{position:absolute;right:0;bottom:29px;width:34px;height:30px;background:#332e29;border-radius:48%;
+    transition:transform .4s ease, bottom .35s ease, right .35s ease}
   .nk-ear{position:absolute;top:-9px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid #332e29}
   .nk-ear.l{left:1px;transform:rotate(-16deg)}
   .nk-ear.r{right:1px;transform:rotate(16deg)}
   .nk-eye{position:absolute;top:11px;width:7px;height:8px;background:#f0a83c;border-radius:50%;animation:nkBlink 5.5s infinite}
+  .nk-eye::after{content:"";position:absolute;left:50%;top:50%;width:2.5px;height:6px;
+    margin:-3px 0 0 -1.25px;background:#15110e;border-radius:50%}
   .nk-eye.l{left:7px}
   .nk-eye.r{right:7px}
-  .nk-tail{position:absolute;left:-14px;bottom:18px;width:30px;height:8px;background:#332e29;border-radius:8px;transform-origin:right center;animation:nkTail 3.4s ease-in-out infinite}
+  .nk-ear::after{content:"";position:absolute;left:-4px;top:5px;width:0;height:0;
+    border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid #b5798c}
+  .nk-mouth{position:absolute;top:23px;left:50%;width:5px;height:0;margin-left:-2.5px;
+    background:#a14a58;border-radius:42%/52%;transition:height .45s ease}
+  .nk-whisker{position:absolute;top:21px;width:13px;height:1.5px;background:rgba(38,33,29,.85);border-radius:1px}
+  .nk-whisker.l{left:-9px;transform:rotate(9deg)}
+  .nk-whisker.l::before{content:"";position:absolute;top:-5px;left:1px;width:12px;height:1.5px;background:inherit;border-radius:1px;transform:rotate(-11deg)}
+  .nk-whisker.r{right:-9px;transform:rotate(-9deg)}
+  .nk-whisker.r::before{content:"";position:absolute;top:-5px;right:1px;width:12px;height:1.5px;background:inherit;border-radius:1px;transform:rotate(11deg)}
+  .nk-tail{position:absolute;left:-18px;bottom:18px;width:34px;height:8px;background:#332e29;border-radius:8px;transform-origin:right center;animation:nkTail 3.4s ease-in-out infinite}
   .nk-leg{position:absolute;bottom:0;width:9px;height:12px;background:#332e29;border-radius:4px 4px 5px 5px}
   .nk-leg.l{left:14px}
   .nk-leg.r{left:44px}
@@ -711,15 +723,35 @@
   .neko.sitting .nk-leg{height:7px}
   .neko.sitting .nk-leg.l{left:32px}
   .neko.sitting .nk-leg.r{left:46px}
-  .neko.sitting .nk-tail{left:16px;bottom:0;transform:rotate(40deg);animation:nkTailSlow 5s ease-in-out infinite}
+  .neko.sitting .nk-tail{left:2px;bottom:3px;width:46px;height:7px;transform:rotate(-6deg);animation:nkTailSit 2.6s ease-in-out infinite}
   .neko.sleeping .nk-body{left:10px;bottom:0;width:58px;height:26px;border-radius:50%/60%}
   .neko.sleeping .nk-head{right:12px;bottom:2px;width:28px;height:24px}
   .neko.sleeping .nk-eye{animation:none;transform:scaleY(.1)}
   .neko.sleeping .nk-leg{display:none}
   .neko.sleeping .nk-tail{left:0;bottom:2px;transform:rotate(22deg);animation:none}
   .neko.sleeping .nk-zzz{display:block}
+  .neko.yawning .nk-mouth{height:7px}
+  .neko.yawning .nk-eye{animation:none;transform:scaleY(.15)}
+  .neko.yawning .nk-head{transform:rotate(-6deg)}
+  .neko.eating .nk-head{bottom:10px;right:4px;animation:nkEat .75s ease-in-out infinite}
+  .neko.eating .nk-eye{animation:none;transform:scaleY(.55)}
+  .neko.grooming .nk-head{bottom:22px;right:10px;animation:nkGroom .6s ease-in-out infinite}
+  .neko.grooming .nk-eye{animation:none;transform:scaleY(.2)}
+  .neko.flicking .nk-tail{animation:nkFlick .7s ease-in-out infinite}
+  .neko.looking .nk-head{animation:nkLook 2.6s ease-in-out}
+  .neko.looking .nk-ear.l{animation:nkTwitch .35s ease-in-out 2}
+  .nk-bowl{display:none}
+  [data-theme="cat"] .nk-bowl{display:block;position:fixed;left:84px;bottom:2px;z-index:49;
+    width:30px;height:9px;background:#9c7b58;border-radius:50%/55%;pointer-events:none}
+  .nk-bowl::before{content:"";position:absolute;left:50%;top:-4px;width:18px;height:7px;margin-left:-9px;
+    background:#d9c1a0;border-radius:50%}
+  @keyframes nkEat{0%,100%{transform:rotate(13deg) translateY(0)}50%{transform:rotate(17deg) translateY(2.5px)}}
+  @keyframes nkGroom{0%,100%{transform:rotate(-30deg) translateY(0)}50%{transform:rotate(-38deg) translateY(2px)}}
+  @keyframes nkFlick{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-20deg)}}
+  @keyframes nkLook{0%,100%{transform:rotate(0)}18%,42%{transform:rotate(-10deg)}62%,86%{transform:rotate(9deg)}}
+  @keyframes nkTwitch{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(-30deg)}}
   @keyframes nkTail{0%,100%{transform:rotate(16deg)}50%{transform:rotate(-12deg)}}
-  @keyframes nkTailSlow{0%,100%{transform:rotate(40deg)}50%{transform:rotate(28deg)}}
+  @keyframes nkTailSit{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(-30deg)}}
   @keyframes nkBlink{0%,91%,100%{transform:scaleY(1)}94%,96%{transform:scaleY(.08)}}
   @keyframes nkStep{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
   @keyframes nkBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
@@ -765,10 +797,13 @@
   <div class="nk-head">
     <div class="nk-ear l"></div><div class="nk-ear r"></div>
     <div class="nk-eye l"></div><div class="nk-eye r"></div>
+    <div class="nk-mouth"></div>
+    <div class="nk-whisker l"></div><div class="nk-whisker r"></div>
   </div>
   <div class="nk-leg l"></div><div class="nk-leg r"></div>
   <div class="nk-zzz"><span>z</span><span>z</span><span>z</span></div>
 </div>
+<div class="nk-bowl" aria-hidden="true"></div>
 
 <div class="wrap">
   <header>
@@ -788,7 +823,7 @@
         <button type="button" class="titem" data-t="zephyr">zephyr</button>
         <button type="button" class="titem" data-t="abyss">abyss</button>
         <button type="button" class="titem" data-t="daybreak">daybreak</button>
-        <button type="button" class="titem" data-t="neko">neko</button>
+        <button type="button" class="titem" data-t="cat">cat</button>
       </div>
     </div>
   </header>
@@ -971,7 +1006,7 @@
         m.style.top = (5 + Math.random()*60) + "vh";
         m.style.left = "-20vw";
         dur = 2 + Math.random()*1.5;
-      } else if(t === "neko"){
+      } else if(t === "cat"){
         // dust motes drifting down through the sunlight
         m.style.left = (Math.random()*100) + "vw";
         m.style.top = "-4vh";
@@ -992,12 +1027,13 @@
   })();
 
   // ----- theme -----
-  var THEMES = ["cosmos", "summit", "ember", "editorial", "zephyr", "abyss", "daybreak", "neko"];
+  var THEMES = ["cosmos", "summit", "ember", "editorial", "zephyr", "abyss", "daybreak", "cat"];
   var stored = localStorage.getItem(THEME_KEY) || "";
-  // migrate pre-theme-system / removed values
+  // migrate pre-theme-system / removed / renamed values
   if(stored === "dark") stored = "cosmos";
   if(stored === "light") stored = "daybreak";
   if(stored === "glass") stored = "daybreak"; // glass theme was removed; closest remaining look
+  if(stored === "neko") stored = "cat";       // neko theme was renamed
   var urlTheme = (location.search.match(/[?&]theme=([a-z]+)/) || [])[1] || "";
   var theme = THEMES.indexOf(urlTheme) >= 0 ? urlTheme
             : (THEMES.indexOf(stored) >= 0 ? stored : "cosmos");
@@ -1027,14 +1063,16 @@
     };
   });
 
-  // ----- resident cat (neko theme): poses react to board state -----
+  // ----- resident cat (cat theme): random life on the floor -----
+  // Actions are picked at random (walk / sit / sleep / brief stale-card
+  // visit). Board state only nudges the odds, it never locks a pose.
   (function nekoLife(){
     var el = $("neko");
     if(!el) return;
     var motionOff = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    function isNeko(){ return document.documentElement.getAttribute("data-theme") === "neko"; }
+    function isCat(){ return document.documentElement.getAttribute("data-theme") === "cat"; }
     function setPose(p){
-      el.classList.remove("walking","sitting","sleeping");
+      el.classList.remove("walking","sitting","sleeping","eating","yawning","grooming","flicking","looking");
       if(p) el.classList.add(p);
     }
     function face(dir){ el.style.transform = dir < 0 ? "scaleX(-1)" : ""; }
@@ -1053,7 +1091,6 @@
       return n;
     }
     function sitOnCard(card){
-      // perch on the stale card's top edge — the gentlest possible nag
       var r = card.getBoundingClientRect();
       el.style.transitionDuration = "0s";
       el.style.position = "absolute";
@@ -1063,45 +1100,171 @@
       face(1);
       setPose("sitting");
     }
+    function pickAction(){
+      var hasStale = !!staleCardEl();
+      var act = activeCount();
+      var r = Math.random();
+      var wVisit = hasStale ? 0.08 : 0;        // rare, brief — never camps there
+      var wEat = 0.09;
+      var wYawn = 0.07;
+      var wGroom = 0.10;
+      var wFlick = 0.08;
+      var wLook = 0.08;
+      var wSleep = act === 0 ? 0.24 : 0.14;    // lazier when nothing is active
+      var wSit = 0.12;
+      if(r < wVisit) return "visit";
+      r -= wVisit;
+      if(r < wEat) return "eat";
+      r -= wEat;
+      if(r < wYawn) return "yawn";
+      r -= wYawn;
+      if(r < wGroom) return "groom";
+      r -= wGroom;
+      if(r < wFlick) return "flick";
+      r -= wFlick;
+      if(r < wLook) return "look";
+      r -= wLook;
+      if(r < wSleep) return "sleep";
+      r -= wSleep;
+      if(r < wSit) return "sit";
+      return "walk";
+    }
     var forced = (location.search.match(/[?&]nekopose=([a-z]+)/) || [])[1] || "";
     function tick(){
-      if(!isNeko()){ setTimeout(tick, 1600); return; }
+      if(!isCat()){ setTimeout(tick, 1600); return; }
       if(forced){
         floorMode();
+        if(forced === "eat"){
+          el.style.left = "24px";
+          face(1);
+          setPose("eating");
+          return;
+        }
         el.style.left = "120px";
+        if(forced === "yawn"){
+          setPose("sitting");
+          el.classList.add("yawning");
+          return;
+        }
+        if(forced === "groom"){ setPose("grooming"); return; }
+        if(forced === "flick"){ setPose("flicking"); return; }
+        if(forced === "look"){ setPose("sitting"); el.classList.add("looking"); return; }
         setPose(forced === "walk" ? "walking" : (forced === "sleep" ? "sleeping" : "sitting"));
         return;
       }
-      var sc = staleCardEl();
-      if(sc){ sitOnCard(sc); setTimeout(tick, 4000); return; }
-      var act = activeCount();
-      if(act === 0){
-        floorMode(); el.style.transitionDuration = "0s"; el.style.left = "28px"; face(1);
-        setPose("sleeping");
-        setTimeout(tick, 9000);
+      var a = pickAction();
+      if(a === "visit"){
+        var sc = staleCardEl();
+        if(sc){
+          sitOnCard(sc);
+          setTimeout(tick, 9000 + Math.random()*6000); // ~10s and it moves on
+          return;
+        }
+        a = "sit";
+      }
+      floorMode();
+      if(a === "eat"){
+        // trot over to the bowl, then munch with the head down
+        var EAT_LEFT = 24; // lines the head up over the bowl at x=84
+        var curE = parseFloat(el.style.left) || 24;
+        var dE = Math.abs(EAT_LEFT - curE);
+        if(dE < 10){
+          el.style.transitionDuration = "0s";
+          el.style.left = EAT_LEFT + "px";
+          face(1);
+          setPose("eating");
+          setTimeout(tick, 6000 + Math.random()*4000);
+          return;
+        }
+        face(EAT_LEFT > curE ? 1 : -1);
+        setPose("walking");
+        var durE = dE / 50;
+        el.style.transitionDuration = durE + "s";
+        el.style.left = EAT_LEFT + "px";
+        setTimeout(function(){ face(1); setPose("eating"); }, durE * 1000 + 50);
+        setTimeout(tick, durE * 1000 + 6500 + Math.random()*4000);
         return;
       }
-      // awake: wander along the bottom edge; more active projects, more pacing
-      floorMode();
-      var walkChance = act >= 4 ? 0.7 : 0.45;
-      if(Math.random() < walkChance){
-        var cur = parseFloat(el.style.left) || 24;
-        var target = 16 + Math.random() * Math.max(60, window.innerWidth - 140);
-        var dist = Math.abs(target - cur);
-        if(dist < 40){ setPose("sitting"); setTimeout(tick, 2500); return; }
-        face(target > cur ? 1 : -1);
-        setPose("walking");
-        var dur = dist / 45;
-        el.style.transitionDuration = dur + "s";
-        el.style.left = target + "px";
-        setTimeout(function(){
-          setPose("sitting");
-          setTimeout(tick, 2000 + Math.random()*5000);
-        }, dur * 1000 + 60);
-      } else {
+      if(a === "yawn"){
+        el.style.transitionDuration = "0s";
         setPose("sitting");
-        setTimeout(tick, 3000 + Math.random()*6000);
+        el.classList.add("yawning");
+        setTimeout(function(){ el.classList.remove("yawning"); }, 1900);
+        setTimeout(tick, 4800 + Math.random()*3000);
+        return;
       }
+      if(a === "groom"){
+        el.style.transitionDuration = "0s";
+        setPose("grooming");
+        setTimeout(tick, 5000 + Math.random()*3000);
+        return;
+      }
+      if(a === "flick"){
+        // standing still, only the tail lashing
+        el.style.transitionDuration = "0s";
+        setPose("flicking");
+        setTimeout(tick, 3000 + Math.random()*2500);
+        return;
+      }
+      if(a === "look"){
+        el.style.transitionDuration = "0s";
+        setPose("sitting");
+        el.classList.add("looking");
+        setTimeout(function(){ el.classList.remove("looking"); }, 2700);
+        setTimeout(tick, 4200 + Math.random()*2500);
+        return;
+      }
+      if(a === "sleep"){
+        el.style.transitionDuration = "0s";
+        setPose("sleeping");
+        setTimeout(tick, 18000 + Math.random()*22000); // a proper nap
+        return;
+      }
+      if(a === "sit"){
+        el.style.transitionDuration = "0s";
+        setPose("sitting");
+        setTimeout(tick, 4000 + Math.random()*7000);
+        return;
+      }
+      // walk — usually a full trek; long treks may pause for a mid-way wash
+      var cur = parseFloat(el.style.left) || 24;
+      var W = window.innerWidth;
+      var target;
+      if(Math.random() < 0.65){
+        target = (cur > W / 2) ? 8 : Math.max(60, W - 104);
+      } else {
+        target = 16 + Math.random() * Math.max(60, W - 140);
+      }
+      var dist = Math.abs(target - cur);
+      if(dist < 60){ setPose("sitting"); setTimeout(tick, 3000); return; }
+      var walkTo = function(x, done){
+        var c = parseFloat(el.style.left) || 24;
+        var d = Math.abs(x - c);
+        face(x > c ? 1 : -1);
+        setPose("walking");
+        var dr = d / 50;
+        el.style.transitionDuration = dr + "s";
+        el.style.left = x + "px";
+        setTimeout(done, dr * 1000 + 60);
+      };
+      if(dist > 380 && Math.random() < 0.5){
+        // stop part-way, wash up, then carry on to the original destination
+        var mid = Math.round(cur + (target - cur) * (0.35 + Math.random()*0.3));
+        var groomMs = 4500 + Math.random()*2500;
+        var t1 = Math.abs(mid - cur) / 50 * 1000 + 60;
+        var t2 = Math.abs(target - mid) / 50 * 1000 + 60;
+        walkTo(mid, function(){
+          el.style.transitionDuration = "0s";
+          setPose("grooming");
+          setTimeout(function(){
+            walkTo(target, function(){ setPose("sitting"); });
+          }, groomMs);
+        });
+        setTimeout(tick, t1 + groomMs + t2 + 2500 + Math.random()*3500);
+        return;
+      }
+      walkTo(target, function(){ setPose("sitting"); });
+      setTimeout(tick, dist / 50 * 1000 + 2560 + Math.random()*4000);
     }
     if(motionOff){
       setPose("sitting");
