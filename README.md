@@ -8,7 +8,7 @@ Built for indie hackers and AI builders who ship a lot of small projects and los
 
 ![Logbook screenshot — deep-space themed board with one sample project expanded above a grid of 9 more](assets/screenshot.png)
 
-**Try the live demo:** [logbook.solocamp.work/?demo=1](https://logbook.solocamp.work/?demo=1) (sample data, no token needed).
+**Try the live demo:** [logbook.solocamp.work/?demo=1](https://logbook.solocamp.work/?demo=1) (sample data, no token needed — hit the &#x2756; menu to switch themes).
 For your own board, see [DEPLOY.md](DEPLOY.md).
 
 ---
@@ -30,7 +30,21 @@ One Cloudflare Worker serves the board UI **and** a small API. Data lives in Wor
 - **Agent-updatable** — a clean `POST /api/status` endpoint so your coding agent can keep the board current. No browser automation, no scraping.
 - **Stale detection** — `active` projects untouched for a while are flagged automatically (the timestamp is set server-side, so it can't drift).
 - **Cross-device** — server-side storage; open it anywhere with your token.
-- **Light / dark**, optional per-project repo link, manual editing when you want it.
+- **7 switchable themes** — not palette swaps: each theme has its own typography, card layout, background scenery, and motion. See [Themes](#themes) below.
+- Optional per-project repo link, manual editing when you want it.
+
+## Themes
+
+Pick a look from the &#x2756; menu in the header. Your choice is remembered in the browser, and `?theme=<name>` previews any theme via URL. Every theme changes structure, not just color — different fonts, card shapes, layouts, and particle physics.
+
+| | |
+|---|---|
+| **cosmos** — deep-space neon: aurora, starfield, heartbeat-synced pulse rings ![cosmos theme](assets/themes/cosmos.jpg) | **summit** — slab-serif stillness: strata-line cards that refuse to float, mountain ridge at dusk ![summit theme](assets/themes/summit.jpg) |
+| **ember** — chamfered metal plates, stencil type, sparks rising from a fire below ![ember theme](assets/themes/ember.jpg) | **editorial** — paper and ink: square corners, marquee ticker, one Klein-blue accent ![editorial theme](assets/themes/editorial.jpg) |
+| **zephyr** — airy pill-shaped rows, cards drift in and get pushed sideways by the wind ![zephyr theme](assets/themes/zephyr.jpg) | **abyss** — deep-sea bioluminescence: jelly-soft cards, bubbles drifting up ![abyss theme](assets/themes/abyss.jpg) |
+| **daybreak** — the cosmos look in daylight ![daybreak theme](assets/themes/daybreak.jpg) | |
+
+Try them live: [cosmos](https://logbook.solocamp.work/?demo=1&theme=cosmos) &middot; [summit](https://logbook.solocamp.work/?demo=1&theme=summit) &middot; [ember](https://logbook.solocamp.work/?demo=1&theme=ember) &middot; [editorial](https://logbook.solocamp.work/?demo=1&theme=editorial) &middot; [zephyr](https://logbook.solocamp.work/?demo=1&theme=zephyr) &middot; [abyss](https://logbook.solocamp.work/?demo=1&theme=abyss) &middot; [daybreak](https://logbook.solocamp.work/?demo=1&theme=daybreak)
 
 ## API
 
