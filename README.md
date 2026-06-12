@@ -30,7 +30,7 @@ One Cloudflare Worker serves the board UI **and** a small API. Data lives in Wor
 - **Agent-updatable** — a clean `POST /api/status` endpoint so your coding agent can keep the board current. No browser automation, no scraping.
 - **Stale detection** — `active` projects untouched for a while are flagged automatically (the timestamp is set server-side, so it can't drift).
 - **Cross-device** — server-side storage; open it anywhere with your token.
-- **7 switchable themes** — not palette swaps: each theme has its own typography, card layout, background scenery, and motion. See [Themes](#themes) below.
+- **9 switchable themes** — not palette swaps: each theme has its own typography, card layout, background scenery, and motion. Two of them come with a resident animal. See [Themes](#themes) below.
 - Optional per-project repo link, manual editing when you want it.
 
 ## Themes
@@ -41,10 +41,11 @@ Pick a look from the &#x2756; menu in the header. Your choice is remembered in t
 |---|---|
 | **cosmos** — deep-space neon: aurora, starfield, heartbeat-synced pulse rings ![cosmos theme](assets/themes/cosmos.jpg) | **summit** — slab-serif stillness: strata-line cards that refuse to float, mountain ridge at dusk ![summit theme](assets/themes/summit.jpg) |
 | **ember** — chamfered metal plates, stencil type, sparks rising from a fire below ![ember theme](assets/themes/ember.jpg) | **editorial** — paper and ink: square corners, marquee ticker, one Klein-blue accent ![editorial theme](assets/themes/editorial.jpg) |
-| **zephyr** — airy pill-shaped rows, cards drift in and get pushed sideways by the wind ![zephyr theme](assets/themes/zephyr.jpg) | **abyss** — deep-sea bioluminescence: jelly-soft cards, bubbles drifting up ![abyss theme](assets/themes/abyss.jpg) |
-| **daybreak** — the cosmos look in daylight ![daybreak theme](assets/themes/daybreak.jpg) | |
+| **zephyr** — airy pill-shaped rows, cards drift in and get pushed sideways by the wind ![zephyr theme](assets/themes/zephyr.jpg) | **ocean** — a clear midsummer sea: rolling surf, sun glitter on the water, a little sailboat drifting by ![ocean theme](assets/themes/ocean.jpg) |
+| **boardroom** — a meeting room in session: marker-sketched cards, chatter bubbles in the margins, a wall clock that tells real time, fresh coffee ![boardroom theme](assets/themes/boardroom.jpg) | **cat** — a sunlit room with a resident black cat: it wanders, naps, grooms, yawns, eats — and sits on the card you've been neglecting ![cat theme](assets/themes/cat.jpg) |
+| **monkey** — jungle morning: a monkey that knuckle-walks edge to edge, swings from cards and banana trees, snacks on bananas, and scratches wherever it itches ![monkey theme](assets/themes/monkey.jpg) | |
 
-Try them live: [cosmos](https://logbook.solocamp.work/?demo=1&theme=cosmos) &middot; [summit](https://logbook.solocamp.work/?demo=1&theme=summit) &middot; [ember](https://logbook.solocamp.work/?demo=1&theme=ember) &middot; [editorial](https://logbook.solocamp.work/?demo=1&theme=editorial) &middot; [zephyr](https://logbook.solocamp.work/?demo=1&theme=zephyr) &middot; [abyss](https://logbook.solocamp.work/?demo=1&theme=abyss) &middot; [daybreak](https://logbook.solocamp.work/?demo=1&theme=daybreak)
+Try them live: [cosmos](https://logbook.solocamp.work/?demo=1&theme=cosmos) &middot; [summit](https://logbook.solocamp.work/?demo=1&theme=summit) &middot; [ember](https://logbook.solocamp.work/?demo=1&theme=ember) &middot; [editorial](https://logbook.solocamp.work/?demo=1&theme=editorial) &middot; [zephyr](https://logbook.solocamp.work/?demo=1&theme=zephyr) &middot; [ocean](https://logbook.solocamp.work/?demo=1&theme=ocean) &middot; [boardroom](https://logbook.solocamp.work/?demo=1&theme=boardroom) &middot; [cat](https://logbook.solocamp.work/?demo=1&theme=cat) &middot; [monkey](https://logbook.solocamp.work/?demo=1&theme=monkey)
 
 ## API
 
