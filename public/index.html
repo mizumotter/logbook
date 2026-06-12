@@ -12,10 +12,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Logbook</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%9A%80</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%2310182e'/><circle cx='32' cy='32' r='23' fill='none' stroke='%23e8f0ff' stroke-width='4'/><g transform='rotate(-38 32 32)'><polygon points='32,12 38.5,32 25.5,32' fill='%23ff5868'/><polygon points='32,52 38.5,32 25.5,32' fill='%23e8f0ff'/></g><circle cx='32' cy='32' r='4.5' fill='%23e8f0ff'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600&family=Bebas+Neue&family=Outfit:wght@300;400;500&family=Roboto+Slab:wght@400;500;700&family=Quicksand:wght@500;600;700&family=Baloo+2:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600&family=Bebas+Neue&family=Outfit:wght@300;400;500&family=Roboto+Slab:wght@400;500;700&family=Quicksand:wght@500;600;700&family=Baloo+2:wght@500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
   :root{
     /* ----- dark (default): deep space ----- */
@@ -43,21 +43,6 @@
     --sans:'Space Grotesk',system-ui,sans-serif;
     --display:'Orbitron',var(--sans);
   }
-  :root[data-theme="daybreak"]{
-    --bg:#eef2fb; --bg-2:#dfe6f7; --bg-soft:rgba(255,255,255,.65);
-    --card:rgba(255,255,255,.70); --card-hi:rgba(255,255,255,.85);
-    --line:rgba(70,110,180,.20); --line-strong:rgba(70,110,180,.42); --line-soft:rgba(70,110,180,.10);
-    --text:#0d1430; --muted:#536084; --faint:#8693b5;
-    --neon-cyan:#0bb4cc; --neon-magenta:#cf2da3; --neon-violet:#6a3fd4; --neon-blue:#2f7ad4;
-    --st-active:#0bb4cc; --st-stalled:#cf2da3; --st-done:#6a3fd4; --st-frozen:#7f8db0;
-    --btn-text:#fff;
-    --glow-cyan:0 0 12px rgba(11,180,204,.40), 0 0 24px rgba(11,180,204,.18);
-    --glow-magenta:0 0 12px rgba(207,45,163,.40), 0 0 24px rgba(207,45,163,.18);
-    --glow-violet:0 0 12px rgba(106,63,212,.40), 0 0 24px rgba(106,63,212,.18);
-    --glow-soft:0 0 28px rgba(70,110,180,.08), inset 0 0 0 1px rgba(70,110,180,.07);
-    --aurora-1:rgba(11,180,204,.16); --aurora-2:rgba(207,45,163,.12); --aurora-3:rgba(106,63,212,.14);
-  }
-
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
   body{
@@ -176,8 +161,7 @@
   header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:24px}
   .brand{display:flex;align-items:center;gap:14px}
   .brand .core{position:relative;width:34px;height:34px;border-radius:50%;
-    background:radial-gradient(circle at 30% 30%, var(--neon-cyan), transparent 65%),
-               radial-gradient(circle at 70% 70%, var(--neon-violet), transparent 65%);
+    display:flex;align-items:center;justify-content:center;color:var(--text);
     box-shadow:var(--glow-cyan);
     animation:pulseCore 3.4s ease-in-out infinite;
   }
@@ -186,6 +170,10 @@
   .brand .core::after{inset:-14px;border-style:dotted;opacity:.55;animation:orbit 24s linear infinite reverse}
   @keyframes pulseCore{0%,100%{box-shadow:var(--glow-cyan)}50%{box-shadow:0 0 22px rgba(0,231,255,.85), 0 0 52px rgba(157,108,255,.35)}}
   @keyframes orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  /* the compass mark — ring and ticks in the theme's ink, needle in its accent */
+  .cmp{display:block}
+  .cmp .cmp-needle{transform-box:view-box;transform-origin:center;animation:cmpSway 7s ease-in-out infinite}
+  @keyframes cmpSway{0%,100%{transform:rotate(-38deg)}50%{transform:rotate(-29deg)}}
   .brand h1{font-family:var(--display);font-size:22px;font-weight:600;margin:0;letter-spacing:3px;text-transform:uppercase;
     background:linear-gradient(90deg,var(--neon-cyan),var(--neon-violet),var(--neon-magenta));
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
@@ -401,47 +389,204 @@
   /* resident monkey (monkey theme only) */
   .monkey{display:none}
 
-  /* ===== theme: abyss — deep-sea bioluminescence ===== */
-  :root[data-theme="abyss"]{
-    --bg:#03171a; --bg-2:#062126; --bg-soft:rgba(8,28,30,.60);
-    --card:rgba(10,32,34,.55); --card-hi:rgba(14,42,44,.72);
-    --line:rgba(94,242,200,.14); --line-strong:rgba(94,242,200,.30); --line-soft:rgba(94,242,200,.07);
-    --text:#dcf5ec; --muted:#8fb8ab; --faint:#557d72;
-    --neon-cyan:#5ef2c8; --neon-magenta:#ff9466; --neon-violet:#58b8ff; --neon-blue:#58b8ff;
-    --st-active:#5ef2c8; --st-stalled:#ff9466; --st-done:#58b8ff; --st-frozen:#5c7a72;
-    --btn-text:#03171a;
-    --glow-cyan:0 0 14px rgba(94,242,200,.45), 0 0 36px rgba(94,242,200,.16);
-    --glow-magenta:0 0 14px rgba(255,148,102,.45), 0 0 36px rgba(255,148,102,.16);
-    --glow-violet:0 0 14px rgba(88,184,255,.45), 0 0 36px rgba(88,184,255,.16);
-    --glow-soft:0 0 28px rgba(94,242,200,.06), inset 0 0 0 1px rgba(94,242,200,.05);
-    --aurora-1:rgba(94,242,200,.13); --aurora-2:rgba(88,184,255,.11); --aurora-3:rgba(20,120,140,.18);
+  /* ===== theme: ocean — a clear midsummer sea ===== */
+  :root[data-theme="ocean"]{
+    --bg:#c6ecfb; --bg-2:#3cb9d9; --bg-soft:rgba(255,255,255,.62);
+    --card:rgba(255,255,255,.88); --card-hi:rgba(255,255,255,.95);
+    --line:rgba(13,90,128,.18); --line-strong:rgba(13,90,128,.38); --line-soft:rgba(13,90,128,.10);
+    --text:#0d3a52; --muted:#3d6e87; --faint:#6e9cb2;
+    --neon-cyan:#0b96c9; --neon-magenta:#f4793b; --neon-violet:#1fb6b0; --neon-blue:#0b96c9;
+    --st-active:#0fa37e; --st-stalled:#f4793b; --st-done:#2e86c9; --st-frozen:#8aa6b5;
+    --btn-text:#fff;
+    --glow-cyan:0 3px 14px rgba(11,150,201,.30);
+    --glow-magenta:0 3px 14px rgba(244,121,59,.30);
+    --glow-violet:0 3px 14px rgba(31,182,176,.30);
+    --glow-soft:0 10px 26px rgba(13,90,128,.10), inset 0 0 0 1px rgba(255,255,255,.55);
+    --aurora-1:rgba(255,244,200,.55); --aurora-2:rgba(120,214,255,.40); --aurora-3:rgba(255,255,255,.50);
+    --display:'Quicksand',var(--sans);
   }
-  [data-theme="abyss"] body{background:radial-gradient(ellipse at 50% -10%, rgba(20,120,140,.14), transparent 60%),linear-gradient(180deg,var(--bg),var(--bg-2));background-attachment:fixed}
-  [data-theme="abyss"] .grid,[data-theme="abyss"] .scan{display:none}
-  [data-theme="abyss"] .aurora{animation-duration:34s,5.2s}
-  [data-theme="abyss"] .heartbeat{animation-duration:5.2s;background:radial-gradient(40% 40% at 50% 50%, rgba(94,242,200,.06), transparent 70%)}
-  [data-theme="abyss"] .pulse-ring{animation-duration:12s;border-width:1px;filter:blur(2px)}
-  [data-theme="abyss"] .pulse-ring.r2{animation-delay:4s}
-  [data-theme="abyss"] .pulse-ring.r3{animation-delay:8s}
-  [data-theme="abyss"] .pcard.s-stalled::before{animation-duration:3.2s}
-  [data-theme="abyss"] .sdot.stalled{animation-duration:2.8s}
-  [data-theme="abyss"] .btn{box-shadow:0 0 0 1px rgba(94,242,200,.35), 0 0 22px rgba(94,242,200,.20)}
-  [data-theme="abyss"] .btn:hover{box-shadow:0 0 0 1px rgba(94,242,200,.6), 0 0 28px rgba(88,184,255,.4)}
-  /* water: soft rounded "jelly" cards + rising bubbles */
-  [data-theme="abyss"] .pcard{border-radius:22px;
-    transition:transform .5s cubic-bezier(.3,1.6,.4,1), border-radius .5s cubic-bezier(.3,1.6,.4,1), box-shadow .3s ease, border-color .3s ease}
-  [data-theme="abyss"] .pcard:hover{transform:translateY(-3px) scale(1.012);border-radius:28px}
-  [data-theme="abyss"] .summary{border-radius:26px}
-  [data-theme="abyss"] .panel{border-radius:22px}
-  [data-theme="abyss"] .meteor{width:7px;height:7px;border-radius:50%;background:rgba(94,242,200,.10);
-    border:1px solid rgba(94,242,200,.45);box-shadow:inset 0 0 6px rgba(94,242,200,.35);filter:none;
-    animation-name:bubbleRise}
-  @keyframes bubbleRise{
-    0%  {transform:translate(0,0) scale(.7);opacity:0}
-    10% {opacity:.85}
-    50% {transform:translate(2vw,-55vh) scale(1)}
-    100%{transform:translate(-1.2vw,-114vh) scale(1.15);opacity:0}
+  [data-theme="ocean"] body{background:linear-gradient(180deg,
+    #9fd9f6 0%, #c6ecfb 14%, #8edcef 32%, #5ecbe4 60%, #3cb9d9 100%);background-attachment:fixed}
+  [data-theme="ocean"] .stars,[data-theme="ocean"] .grid,[data-theme="ocean"] .scan,
+  [data-theme="ocean"] .heartbeat,[data-theme="ocean"] .pulse-ring,[data-theme="ocean"] .boot{display:none}
+  [data-theme="ocean"] .aurora{mix-blend-mode:normal;filter:blur(100px) saturate(1)}
+  [data-theme="ocean"] .aurora.a1{animation:nebula1 32s ease-in-out infinite}
+  [data-theme="ocean"] .aurora.a2{animation:nebula2 38s ease-in-out infinite}
+  [data-theme="ocean"] .aurora.a3{animation:nebula3 44s ease-in-out infinite}
+  [data-theme="ocean"] .pcard{border-radius:18px}
+  [data-theme="ocean"] .pcard:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(13,90,128,.16)}
+  [data-theme="ocean"] .pname{text-transform:none;letter-spacing:.3px;font-weight:600;font-size:16px}
+  [data-theme="ocean"] .pill{border:none;text-shadow:none;padding:4px 11px}
+  [data-theme="ocean"] .pill.active{background:rgba(15,163,126,.15)}
+  [data-theme="ocean"] .pill.stalled{background:rgba(244,121,59,.18)}
+  [data-theme="ocean"] .pill.done{background:rgba(46,134,201,.15)}
+  [data-theme="ocean"] .pill.frozen{background:rgba(138,166,181,.22)}
+  [data-theme="ocean"] .summary{border-radius:20px}
+  [data-theme="ocean"] .panel{border-radius:18px}
+  [data-theme="ocean"] .btn{border-radius:12px}
+  [data-theme="ocean"] .sec-title::before{content:"\1F30A "}
+  [data-theme="ocean"] .gate .big{filter:none}
+  /* sun glitter on the water — sparkles pop in place */
+  [data-theme="ocean"] .meteor{width:5px;height:5px;border-radius:50%;background:#fff;
+    box-shadow:0 0 8px rgba(255,255,255,.95), 0 0 16px rgba(170,232,255,.65);filter:none;
+    animation-name:glintPop}
+  [data-theme="ocean"] .meteor.v{background:#fff6d6}
+  [data-theme="ocean"] .meteor.m{background:#d9f6ff}
+  @keyframes glintPop{
+    0%  {transform:scale(.3);opacity:0}
+    30% {transform:scale(1.15);opacity:1}
+    60% {transform:scale(.9);opacity:.7}
+    100%{transform:scale(.2);opacity:0}
   }
+
+  /* rolling surf at the bottom of the screen (ocean theme only) */
+  .sea{display:none}
+  [data-theme="ocean"] .sea{display:block;position:fixed;left:0;right:0;bottom:0;height:215px;z-index:0;pointer-events:none}
+  .wave{position:absolute;left:0;bottom:0;width:200%;background-repeat:repeat-x;background-size:50% 100%}
+  .wave.w1{height:185px;opacity:.9;animation:waveDrift 30s linear infinite;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 185' preserveAspectRatio='none'><path d='M0,80 C150,122 320,40 600,74 C880,108 1050,44 1200,80 L1200,185 L0,185 Z' fill='%231f86b0' fill-opacity='0.50'/></svg>")}
+  .wave.w2{height:150px;opacity:.9;animation:waveDrift 19s linear infinite reverse;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 150' preserveAspectRatio='none'><path d='M0,84 C200,28 400,124 600,72 C800,28 1000,124 1200,84 L1200,150 L0,150 Z' fill='%232ea6cc' fill-opacity='0.72'/></svg>")}
+  .wave.w3{height:112px;opacity:.96;animation:waveDrift 12s linear infinite;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 112' preserveAspectRatio='none'><path d='M0,68 C100,34 240,92 400,58 C560,30 700,92 850,62 C1000,34 1100,84 1200,64 L1200,112 L0,112 Z' fill='%23ffffff' fill-opacity='0.94'/></svg>")}
+  @keyframes waveDrift{
+    0%  {transform:translate3d(0,0,0)}
+    25% {transform:translate3d(-12.5%,4px,0)}
+    50% {transform:translate3d(-25%,0,0)}
+    75% {transform:translate3d(-37.5%,4px,0)}
+    100%{transform:translate3d(-50%,0,0)}
+  }
+  /* a little sailboat drifting across, riding the back swell */
+  .boat{position:absolute;bottom:84px;left:-70px;width:36px;height:36px;animation:boatSail 140s linear infinite;animation-delay:-35s}
+  .boat-in{position:relative;width:100%;height:100%;transform-origin:50% 92%;animation:boatRock 5s ease-in-out infinite}
+  .boat-mast{position:absolute;left:16px;bottom:8px;width:2px;height:26px;background:#eef8fc}
+  .boat-sail{position:absolute;left:18px;bottom:11px;width:0;height:0;
+    border-left:15px solid rgba(255,255,255,.96);border-top:22px solid transparent}
+  .boat-jib{position:absolute;left:1px;bottom:11px;width:0;height:0;
+    border-right:13px solid rgba(255,255,255,.82);border-top:18px solid transparent}
+  .boat-hull{position:absolute;left:0;bottom:0;width:34px;height:9px;background:#155a78;
+    border-radius:2px 2px 14px 14px}
+  @keyframes boatSail{0%{left:-70px}100%{left:104%}}
+  @keyframes boatRock{0%,100%{transform:rotate(-2.5deg) translateY(0)}50%{transform:rotate(3deg) translateY(2px)}}
+  /* the midsummer sun, breathing gently in the upper sky */
+  .sun{display:none}
+  [data-theme="ocean"] .sun{display:block;position:fixed;top:52px;right:10%;width:88px;height:88px;z-index:0;pointer-events:none;
+    border-radius:50%;
+    background:radial-gradient(circle, #fffce9 0%, #fff4ba 36%, rgba(255,238,150,.55) 58%, rgba(255,238,150,0) 72%);
+    box-shadow:0 0 60px 28px rgba(255,246,185,.60), 0 0 150px 75px rgba(255,240,160,.30);
+    animation:sunBreathe 7s ease-in-out infinite}
+  [data-theme="ocean"] .sun::after{content:"";position:absolute;top:96%;left:50%;width:64px;height:72vh;
+    margin-left:-32px;
+    background:linear-gradient(180deg, rgba(255,248,205,.34), rgba(255,248,205,.10) 55%, transparent 85%);
+    filter:blur(7px)}
+  @keyframes sunBreathe{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.05);filter:brightness(1.07)}}
+
+  /* ===== theme: boardroom — a meeting room mid-discussion ===== */
+  :root[data-theme="boardroom"]{
+    --bg:#f4f3ee; --bg-2:#eceae3; --bg-soft:#fbfaf6;
+    --card:#ffffff; --card-hi:#ffffff;
+    --line:#2b2e33; --line-strong:#2b2e33; --line-soft:rgba(43,46,51,.20);
+    --text:#26282c; --muted:#5d6066; --faint:#8e9197;
+    --neon-cyan:#2f6fc4; --neon-magenta:#e2574c; --neon-violet:#7a4fc9; --neon-blue:#2f6fc4;
+    --st-active:#2e9e4f; --st-stalled:#e2574c; --st-done:#2f6fc4; --st-frozen:#8a8d93;
+    --btn-text:#26282c;
+    --glow-cyan:0 0 0 3px rgba(47,111,196,.16);
+    --glow-magenta:0 0 0 3px rgba(226,87,76,.16);
+    --glow-violet:0 0 0 3px rgba(122,79,201,.16);
+    --glow-soft:3px 4px 0 rgba(43,46,51,.10);
+    --aurora-1:transparent; --aurora-2:transparent; --aurora-3:transparent;
+    --display:'Patrick Hand',cursive;
+  }
+  [data-theme="boardroom"] body{background:radial-gradient(120% 90% at 50% 0%, #fbfaf6, #efeee7 70%);background-attachment:fixed}
+  [data-theme="boardroom"] .stars,[data-theme="boardroom"] .aurora,[data-theme="boardroom"] .grid,
+  [data-theme="boardroom"] .scan,[data-theme="boardroom"] .heartbeat,[data-theme="boardroom"] .pulse-ring,
+  [data-theme="boardroom"] .boot{display:none}
+  [data-theme="boardroom"] .brand .core{background:none;box-shadow:none;animation:none}
+  [data-theme="boardroom"] .brand .core::before,[data-theme="boardroom"] .brand .core::after{display:none}
+  [data-theme="boardroom"] .brand h1{background:none;-webkit-background-clip:initial;background-clip:initial;
+    -webkit-text-fill-color:#26282c;color:#26282c;filter:none;font-size:26px;letter-spacing:1px}
+  [data-theme="boardroom"] .icon-btn,[data-theme="boardroom"] .theme-menu{background:#fff;border:2px solid #2b2e33;
+    backdrop-filter:none;box-shadow:2px 3px 0 rgba(43,46,51,.12)}
+  [data-theme="boardroom"] .summary{background:#fff;border:2px solid #2b2e33;backdrop-filter:none;
+    border-radius:255px 15px 225px 15px/15px 225px 15px 255px}
+  [data-theme="boardroom"] .summary::before{display:none}
+  [data-theme="boardroom"] .sum b{font-family:var(--display);font-size:32px}
+  [data-theme="boardroom"] .sec-title::before{content:"\1F4AC "}
+  /* cards = marker sketches pinned slightly crooked */
+  [data-theme="boardroom"] .pcard{background:#fff;border:2px solid #2b2e33;backdrop-filter:none;
+    border-radius:255px 15px 225px 15px/15px 225px 15px 255px}
+  [data-theme="boardroom"] .pcard:nth-child(odd){transform:rotate(.5deg)}
+  [data-theme="boardroom"] .pcard:nth-child(even){transform:rotate(-.5deg)}
+  [data-theme="boardroom"] .pcard:hover{transform:rotate(0) translateY(-3px);border-color:#2b2e33;
+    box-shadow:5px 6px 0 rgba(43,46,51,.16)}
+  [data-theme="boardroom"] .pcard.open,[data-theme="boardroom"] .pcard.open:hover{transform:none}
+  [data-theme="boardroom"] .pcard::before{width:4px;border-radius:3px}
+  [data-theme="boardroom"] .pname{font-size:20px;font-weight:400;letter-spacing:.5px;text-transform:none}
+  [data-theme="boardroom"] .pill{border:2px solid currentColor;border-radius:4px;text-shadow:none;
+    transform:rotate(-1.5deg);font-weight:600}
+  [data-theme="boardroom"] .panel{background:#fff;border:2px solid #2b2e33;
+    border-radius:15px 255px 15px 225px/225px 15px 255px 15px}
+  [data-theme="boardroom"] .panel::before{display:none}
+  [data-theme="boardroom"] .panel h3{font-family:var(--display);font-size:19px;font-weight:400;letter-spacing:.5px}
+  [data-theme="boardroom"] input,[data-theme="boardroom"] select,[data-theme="boardroom"] textarea{
+    background:#fff;border:2px solid #2b2e33;border-radius:6px}
+  [data-theme="boardroom"] .btn{background:#ffd84d;box-shadow:3px 4px 0 rgba(43,46,51,.18);
+    border-radius:12px 4px 14px 5px/5px 14px 4px 12px;font-size:17px;font-weight:400;letter-spacing:1px}
+  [data-theme="boardroom"] .btn:hover{filter:none;background:#ffce1f;box-shadow:4px 5px 0 rgba(43,46,51,.22)}
+  [data-theme="boardroom"] .btn.ghost{background:#fff;color:#26282c;border:2px solid #2b2e33}
+  [data-theme="boardroom"] .gate .big{filter:none}
+  [data-theme="boardroom"] .gate h2{background:none;-webkit-background-clip:initial;background-clip:initial;
+    -webkit-text-fill-color:#26282c;color:#26282c;font-size:24px}
+  /* speech bubbles — snippets of the discussion, popping up in the side margins */
+  [data-theme="boardroom"] .meteor{width:auto;height:auto;padding:7px 13px;background:#fff;border:2px solid #2b2e33;
+    border-radius:14px 14px 14px 3px;box-shadow:3px 3px 0 rgba(43,46,51,.12);filter:none;
+    font-family:var(--display);font-size:16px;line-height:1;color:#26282c;white-space:nowrap;
+    animation-name:bubblePop}
+  [data-theme="boardroom"] .meteor.v{background:#ffe98a}
+  [data-theme="boardroom"] .meteor.m{background:#cfe3ff;border-radius:14px 14px 3px 14px}
+  @keyframes bubblePop{
+    0%  {transform:scale(.4);opacity:0}
+    14% {transform:scale(1.07);opacity:1}
+    24% {transform:scale(1)}
+    82% {opacity:1}
+    100%{transform:scale(.92);opacity:0}
+  }
+  /* meeting-room props: wall clock, fresh coffee, whiteboard tray */
+  .brd-clock,.brd-coffee,.brd-tray{display:none}
+  [data-theme="boardroom"] .brd-clock{display:block;position:fixed;top:88px;right:6%;width:58px;height:58px;
+    background:#fff;border:3px solid #2b2e33;border-radius:50%;z-index:0;pointer-events:none;
+    box-shadow:3px 4px 0 rgba(43,46,51,.12)}
+  [data-theme="boardroom"] .brd-clock::after{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;
+    margin:-2.5px 0 0 -2.5px;background:#e2574c;border-radius:50%}
+  .ck-h,.ck-m{position:absolute;left:50%;bottom:50%;background:#2b2e33;transform-origin:50% 100%;border-radius:2px}
+  .ck-h{width:3.5px;height:14px;margin-left:-1.75px}
+  .ck-m{width:2.5px;height:20px;margin-left:-1.25px}
+  [data-theme="boardroom"] .brd-coffee{display:block;position:fixed;left:28px;bottom:22px;width:34px;height:26px;
+    background:#fff;border:2.5px solid #2b2e33;border-radius:3px 3px 13px 13px;z-index:0;pointer-events:none;
+    box-shadow:3px 3px 0 rgba(43,46,51,.10)}
+  [data-theme="boardroom"] .brd-coffee::after{content:"";position:absolute;right:-13px;top:4px;width:9px;height:12px;
+    border:2.5px solid #2b2e33;border-left:none;border-radius:0 9px 9px 0}
+  .cf-steam{position:absolute;top:-17px;width:3px;height:12px;border-radius:3px;
+    background:rgba(120,124,130,.55);filter:blur(.6px);animation:steamRise 2.6s ease-in-out infinite}
+  .cf-steam.s1{left:8px}
+  .cf-steam.s2{left:18px;animation-delay:-1.3s}
+  @keyframes steamRise{
+    0%  {transform:translateY(4px) scaleY(.7);opacity:0}
+    30% {opacity:.8}
+    100%{transform:translateY(-15px) scaleY(1.2);opacity:0}
+  }
+  [data-theme="boardroom"] .brd-tray{display:block;position:fixed;left:0;right:0;bottom:0;height:10px;
+    background:linear-gradient(180deg,#dcdbd4,#c6c5be);box-shadow:0 -2px 6px rgba(60,60,60,.12);
+    z-index:0;pointer-events:none}
+  .brd-tray i{position:absolute;bottom:9px;display:block}
+  .brd-tray .tm{width:52px;height:9px;border:2px solid #2b2e33;border-radius:5px}
+  .brd-tray .tm::after{content:"";position:absolute;right:-1px;top:-2px;width:11px;height:9px;
+    background:#2b2e33;border-radius:0 5px 5px 0}
+  .brd-tray .tm.red{left:9%;background:#e2574c}
+  .brd-tray .tm.blue{left:9%;margin-left:64px;background:#2f6fc4}
+  .brd-tray .tm.green{left:9%;margin-left:128px;background:#2e9e4f}
+  .brd-tray .er{right:10%;width:46px;height:15px;background:#f4f3ee;border:2px solid #2b2e33;border-radius:3px}
+  @media (max-width:1100px){[data-theme="boardroom"] .brd-clock{display:none}}
 
   /* ===== theme: ember — fire, embers rising from below ===== */
   :root[data-theme="ember"]{
@@ -606,7 +751,7 @@
   [data-theme="editorial"] .ticker > div{display:inline-block;padding:6px 0;
     font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#14120e;
     animation:tickermove 22s linear infinite}
-  [data-theme="editorial"] .brand .core{background:#14120e;box-shadow:none;animation:none;border-radius:0}
+  [data-theme="editorial"] .brand .core{background:none;box-shadow:none;animation:none}
   [data-theme="editorial"] .brand .core::before,[data-theme="editorial"] .brand .core::after{display:none}
   [data-theme="editorial"] .brand h1{background:none;-webkit-background-clip:initial;background-clip:initial;
     -webkit-text-fill-color:#14120e;color:#14120e;filter:none;letter-spacing:1px}
@@ -998,6 +1143,15 @@
   <div class="stars s3" id="stars3"></div>
   <div id="meteors"></div>
   <div class="ridge"></div>
+  <div class="sun"></div>
+  <div class="sea">
+    <div class="wave w1"></div>
+    <div class="boat"><div class="boat-in">
+      <div class="boat-mast"></div><div class="boat-sail"></div><div class="boat-jib"></div><div class="boat-hull"></div>
+    </div></div>
+    <div class="wave w2"></div>
+    <div class="wave w3"></div>
+  </div>
 </div>
 <div class="grid" aria-hidden="true"></div>
 <div class="scan" aria-hidden="true"></div>
@@ -1049,10 +1203,26 @@
   <div class="tr-bunch"><div class="bn"></div><div class="bn"></div><div class="bn"></div></div>
 </div>
 
+<div class="brd-clock" aria-hidden="true"><div class="ck-h"></div><div class="ck-m"></div></div>
+<div class="brd-coffee" aria-hidden="true"><div class="cf-steam s1"></div><div class="cf-steam s2"></div></div>
+<div class="brd-tray" aria-hidden="true">
+  <i class="tm red"></i><i class="tm blue"></i><i class="tm green"></i><i class="er"></i>
+</div>
+
 <div class="wrap">
   <header>
     <div class="brand">
-      <span class="core"></span>
+      <span class="core" aria-hidden="true">
+        <svg class="cmp" viewBox="0 0 26 26" width="26" height="26">
+          <circle cx="13" cy="13" r="11.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M13 3.2v2.4M13 20.4v2.4M3.2 13h2.4M20.4 13h2.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <g class="cmp-needle">
+            <polygon points="13,5.6 15.7,13 10.3,13" fill="var(--neon-magenta)"/>
+            <polygon points="13,20.4 15.7,13 10.3,13" fill="var(--faint)"/>
+          </g>
+          <circle cx="13" cy="13" r="1.7" fill="currentColor"/>
+        </svg>
+      </span>
       <div><h1>Logbook</h1><span class="tag">mission control</span></div>
     </div>
     <div class="htools">
@@ -1065,8 +1235,8 @@
         <button type="button" class="titem" data-t="ember">ember</button>
         <button type="button" class="titem" data-t="editorial">editorial</button>
         <button type="button" class="titem" data-t="zephyr">zephyr</button>
-        <button type="button" class="titem" data-t="abyss">abyss</button>
-        <button type="button" class="titem" data-t="daybreak">daybreak</button>
+        <button type="button" class="titem" data-t="ocean">ocean</button>
+        <button type="button" class="titem" data-t="boardroom">boardroom</button>
         <button type="button" class="titem" data-t="cat">cat</button>
         <button type="button" class="titem" data-t="monkey">monkey</button>
       </div>
@@ -1231,6 +1401,10 @@
     if(motionOff) return;
     var host = $("meteors");
     var colors = ["", "v", "m"];
+    // meeting chatter for the boardroom theme
+    var PHRASES = ["Nice!", "Love it!", "Hmm…", "Good point", "Agreed!", "Decided!",
+      "Ship it!", "Tomorrow?", "Why not?", "Wait…", "One sec", "LGTM",
+      "+1", "Really?", "Let's do it", "…"];
     function spawn(){
       var t = document.documentElement.getAttribute("data-theme") || "cosmos";
       var m = document.createElement("div");
@@ -1241,11 +1415,27 @@
         m.style.left = (Math.random()*100) + "vw";
         m.style.top = "102vh";
         dur = 3 + Math.random()*3;
-      } else if(t === "abyss"){
-        // bubbles drift up slowly
+      } else if(t === "ocean"){
+        // sun glitter twinkling on the water (sparkles in place)
         m.style.left = (Math.random()*100) + "vw";
-        m.style.top = "104vh";
-        dur = 6 + Math.random()*5;
+        m.style.top = (26 + Math.random()*64) + "vh";
+        dur = 1.6 + Math.random()*1.4;
+      } else if(t === "boardroom"){
+        // meeting chatter pops up in the margins beside the board, never under it
+        m.textContent = PHRASES[Math.floor(Math.random()*PHRASES.length)];
+        var W = window.innerWidth;
+        var margin = (W - 940) / 2;
+        var bx;
+        if(margin > 90){
+          bx = (Math.random() < 0.5)
+            ? 12 + Math.random() * Math.max(24, margin - 130)
+            : (W - margin + 16) + Math.random() * Math.max(24, margin - 140);
+        } else {
+          bx = 10 + Math.random() * Math.max(40, W - 150); // narrow screens: anywhere
+        }
+        m.style.left = bx + "px";
+        m.style.top = (10 + Math.random()*74) + "vh";
+        dur = 2.4 + Math.random()*1.6;
       } else if(t === "zephyr"){
         // gusts blow in from the left edge
         m.style.top = (5 + Math.random()*60) + "vh";
@@ -1271,19 +1461,23 @@
       ttl = dur*1000 + 600;
       host.appendChild(m);
       setTimeout(function(){ m.remove(); }, ttl);
-      setTimeout(spawn, 800 + Math.random()*2200);
+      // the boardroom chats much more often than space drops meteors
+      var nextMs = (t === "boardroom") ? 450 + Math.random()*900 : 800 + Math.random()*2200;
+      setTimeout(spawn, nextMs);
     }
     setTimeout(spawn, 600);
   })();
 
   // ----- theme -----
-  var THEMES = ["cosmos", "summit", "ember", "editorial", "zephyr", "abyss", "daybreak", "cat", "monkey"];
+  var THEMES = ["cosmos", "summit", "ember", "editorial", "zephyr", "ocean", "boardroom", "cat", "monkey"];
   var stored = localStorage.getItem(THEME_KEY) || "";
   // migrate pre-theme-system / removed / renamed values
   if(stored === "dark") stored = "cosmos";
-  if(stored === "light") stored = "daybreak";
-  if(stored === "glass") stored = "daybreak"; // glass theme was removed; closest remaining look
-  if(stored === "neko") stored = "cat";       // neko theme was renamed
+  if(stored === "light") stored = "boardroom";    // old light mode → nearest light look
+  if(stored === "glass") stored = "boardroom";    // glass theme was removed
+  if(stored === "daybreak") stored = "boardroom"; // daybreak was replaced by the meeting room
+  if(stored === "neko") stored = "cat";           // neko theme was renamed
+  if(stored === "abyss") stored = "ocean";        // abyss was replaced by the sunny sea
   var urlTheme = (location.search.match(/[?&]theme=([a-z]+)/) || [])[1] || "";
   var theme = THEMES.indexOf(urlTheme) >= 0 ? urlTheme
             : (THEMES.indexOf(stored) >= 0 ? stored : "cosmos");
@@ -1746,6 +1940,22 @@
     }
     setPose("sitting");
     setTimeout(tick, 1400);
+  })();
+
+  // ----- wall clock (boardroom theme): shows the actual time -----
+  (function wallClock(){
+    var h = document.querySelector(".ck-h");
+    var m = document.querySelector(".ck-m");
+    if(!h || !m) return;
+    function setHands(){
+      var now = new Date();
+      var mins = now.getMinutes();
+      var hrs = now.getHours() % 12;
+      m.style.transform = "rotate(" + (mins * 6) + "deg)";
+      h.style.transform = "rotate(" + (hrs * 30 + mins * 0.5) + "deg)";
+    }
+    setHands();
+    setInterval(setHands, 30000);
   })();
 
   // ----- token -----
